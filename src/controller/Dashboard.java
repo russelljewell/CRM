@@ -3,10 +3,6 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import model.Appointment;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -134,6 +130,15 @@ public class Dashboard implements Initializable {
         divisionLabel.setVisible(true);
         divisionLabel.setText("Division");
         divisionComboBox.setVisible(true);
+
+        appointmentIdLabel.setVisible(false);
+        appointmentIdText.setVisible(false);
+        dateLabel.setVisible(false);
+        dateDatePicker.setVisible(false);
+        startLabel.setVisible(false);
+        startTextField.setVisible(false);
+        endLabel.setVisible(false);
+        endTextField.setVisible(false);
     }
 
     public void appointmentDetails() {

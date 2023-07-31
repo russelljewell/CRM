@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 
 public class Login {
@@ -11,5 +10,6 @@ public class Login {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
+        System.exit(0);
     }
 }

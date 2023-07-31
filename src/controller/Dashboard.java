@@ -72,6 +72,8 @@ public class Dashboard {
     }
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
+        detailsLabel.setText("Create Appointment");
+
     }
 
     public void onActionDeleteAppointment(ActionEvent actionEvent) {

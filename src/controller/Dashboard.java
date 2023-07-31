@@ -3,11 +3,13 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import model.Appointment;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Dashboard implements Initializable {
-    public TableView allAppointmentTable;
+    public TableView<Appointment> allAppointmentTable;
     public TableColumn allAppointmentIdColumn;
     public TableColumn allCustomerIdColumn;
     public TableColumn allUserIdColumn;
@@ -19,7 +21,7 @@ public class Dashboard implements Initializable {
     public TableColumn allDateColumn;
     public TableColumn allStartColumn;
     public TableColumn allEndColumn;
-    public TableView monthAppointmentTable;
+    public TableView<Appointment> monthAppointmentTable;
     public TableColumn monthAppointmentIdColumn;
     public TableColumn monthCustomerIdColumn;
     public TableColumn monthUserIdColumn;
@@ -31,7 +33,7 @@ public class Dashboard implements Initializable {
     public TableColumn monthDateColumn;
     public TableColumn monthStartColumn;
     public TableColumn monthEndColumn;
-    public TableView weekAppointmentTable;
+    public TableView<Appointment> weekAppointmentTable;
     public TableColumn weekAppointmentIdColumn;
     public TableColumn weekCustomerIdColumn;
     public TableColumn weekUserIdColumn;
@@ -106,31 +108,24 @@ public class Dashboard implements Initializable {
         detailsLabel.setText("Create Customer");
         customerIdLabel.setVisible(true);
         customerIdText.setVisible(true);
-
         customerNameLabel.setVisible(true);
         customerNameLabel.setText("Customer Name");
         customerNameTextField.setVisible(true);
-
         addressLabel.setVisible(true);
         addressLabel.setText("Address");
         addressTextField.setVisible(true);
-
         postalLabel.setVisible(true);
         postalLabel.setText("Postal Code");
         postalTextField.setVisible(true);
-
         phoneLabel.setVisible(true);
         phoneLabel.setText("Phone Number");
         phoneTextField.setVisible(true);
-
         countryLabel.setVisible(true);
         countryLabel.setText("Country");
         countryComboBox.setVisible(true);
-
         divisionLabel.setVisible(true);
         divisionLabel.setText("Division");
         divisionComboBox.setVisible(true);
-
         appointmentIdLabel.setVisible(false);
         appointmentIdText.setVisible(false);
         dateLabel.setVisible(false);
@@ -145,40 +140,30 @@ public class Dashboard implements Initializable {
         detailsLabel.setText("Create Appointment");
         customerIdLabel.setVisible(true);
         customerIdText.setVisible(true);
-
         customerNameLabel.setVisible(true);
         customerNameLabel.setText("Title");
         customerNameTextField.setVisible(true);
-
         appointmentIdLabel.setVisible(true);
         appointmentIdText.setVisible(true);
-
         addressLabel.setVisible(true);
         addressLabel.setText("Description");
         addressTextField.setVisible(true);
-
         postalLabel.setVisible(true);
         postalLabel.setText("Location");
         postalTextField.setVisible(true);
-
         phoneLabel.setVisible(true);
         phoneLabel.setText("Type");
         phoneTextField.setVisible(true);
-
         countryLabel.setVisible(true);
         countryLabel.setText("Contact");
         countryComboBox.setVisible(true);
-
         divisionLabel.setVisible(true);
         divisionLabel.setText("User ID");
         divisionComboBox.setVisible(true);
-
         dateLabel.setVisible(true);
         dateDatePicker.setVisible(true);
-
         startLabel.setVisible(true);
         startTextField.setVisible(true);
-
         endLabel.setVisible(true);
         endTextField.setVisible(true);
     }

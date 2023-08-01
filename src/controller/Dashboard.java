@@ -4,47 +4,57 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import model.Appointment;
+import model.Customer;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Dashboard implements Initializable {
+    public TableView<Customer> customerTableView;
+    public TableColumn<Customer, Integer> customerIdColumn;
+    public TableColumn<Customer, String> customerNameColumn;
+    public TableColumn<Customer, String> customerAddressColumn;
+    public TableColumn<Customer, String> customerPostalColumn;
+    public TableColumn<Customer, String> customerPhoneColumn;
+    public TableColumn<Customer, Integer> customerDivisionColumn;
     public TableView<Appointment> allAppointmentTable;
-    public TableColumn allAppointmentIdColumn;
-    public TableColumn allCustomerIdColumn;
-    public TableColumn allUserIdColumn;
-    public TableColumn allTitleColumn;
-    public TableColumn allDescriptionColumn;
-    public TableColumn allLocationColumn;
-    public TableColumn allContactColumn;
-    public TableColumn allTypeColumn;
-    public TableColumn allDateColumn;
-    public TableColumn allStartColumn;
-    public TableColumn allEndColumn;
+    public TableColumn<Appointment, Integer> allAppointmentIdColumn;
+    public TableColumn<Appointment, Integer> allCustomerIdColumn;
+    public TableColumn<Appointment, Integer> allUserIdColumn;
+    public TableColumn<Appointment, String> allTitleColumn;
+    public TableColumn<Appointment, String> allDescriptionColumn;
+    public TableColumn<Appointment, String> allLocationColumn;
+    public TableColumn<Appointment, String> allContactColumn;
+    public TableColumn<Appointment, String> allTypeColumn;
+    public TableColumn<Appointment, LocalDateTime> allDateColumn;
+    public TableColumn<Appointment, LocalDateTime> allStartColumn;
+    public TableColumn<Appointment, LocalDateTime> allEndColumn;
     public TableView<Appointment> monthAppointmentTable;
-    public TableColumn monthAppointmentIdColumn;
-    public TableColumn monthCustomerIdColumn;
-    public TableColumn monthUserIdColumn;
-    public TableColumn monthTitleColumn;
-    public TableColumn monthDescriptionColumn;
-    public TableColumn monthLocationColumn;
-    public TableColumn monthContactColumn;
-    public TableColumn monthTypeColumn;
-    public TableColumn monthDateColumn;
-    public TableColumn monthStartColumn;
-    public TableColumn monthEndColumn;
+    public TableColumn<Appointment, Integer> monthAppointmentIdColumn;
+    public TableColumn<Appointment, Integer> monthCustomerIdColumn;
+    public TableColumn<Appointment, Integer> monthUserIdColumn;
+    public TableColumn<Appointment, String> monthTitleColumn;
+    public TableColumn<Appointment, String> monthDescriptionColumn;
+    public TableColumn<Appointment, String> monthLocationColumn;
+    public TableColumn<Appointment, String> monthContactColumn;
+    public TableColumn<Appointment, String> monthTypeColumn;
+    public TableColumn<Appointment, LocalDateTime> monthDateColumn;
+    public TableColumn<Appointment, LocalDateTime> monthStartColumn;
+    public TableColumn<Appointment, LocalDateTime> monthEndColumn;
     public TableView<Appointment> weekAppointmentTable;
-    public TableColumn weekAppointmentIdColumn;
-    public TableColumn weekCustomerIdColumn;
-    public TableColumn weekUserIdColumn;
-    public TableColumn weekTitleColumn;
-    public TableColumn weekDescriptionColumn;
-    public TableColumn weekLocationColumn;
-    public TableColumn weekContactColumn;
-    public TableColumn weekTypeColumn;
-    public TableColumn weekDateColumn;
-    public TableColumn weekStartColumn;
-    public TableColumn weekEndColumn;
+    public TableColumn<Appointment, Integer> weekAppointmentIdColumn;
+    public TableColumn<Appointment, Integer> weekCustomerIdColumn;
+    public TableColumn<Appointment, Integer> weekUserIdColumn;
+    public TableColumn<Appointment, String> weekTitleColumn;
+    public TableColumn<Appointment, String> weekDescriptionColumn;
+    public TableColumn<Appointment, String> weekLocationColumn;
+    public TableColumn<Appointment, String> weekContactColumn;
+    public TableColumn<Appointment, String> weekTypeColumn;
+    public TableColumn<Appointment, LocalDateTime> weekDateColumn;
+    public TableColumn<Appointment, LocalDateTime> weekStartColumn;
+    public TableColumn<Appointment, LocalDateTime> weekEndColumn;
     public Label detailsLabel;
     public Label customerIdLabel;
     public Label customerIdText;
@@ -69,6 +79,7 @@ public class Dashboard implements Initializable {
     public Label endLabel;
     public TextField endTextField;
 
+
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
     }
@@ -87,13 +98,15 @@ public class Dashboard implements Initializable {
 
     public void onActionSave(ActionEvent actionEvent) {
         if (!customerIdLabel.isVisible()) {
-
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customer table.");
+            alert.showAndWait();
         }
     }
 
-    public void onActionClear(ActionEvent actionEvent) {
+    public void onActionReset(ActionEvent actionEvent) {
         if (!customerIdLabel.isVisible()) {
-
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
+            alert.showAndWait();
         }
     }
 
@@ -101,7 +114,11 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
-        System.exit(0);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            System.exit(0);
+        }
     }
 
     public void customerDetails() {

@@ -134,7 +134,7 @@
                                 <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="12">
                                     <buttons>
                                         <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onActionSave" text="Save" />
-                                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onActionClear" text="Clear" />
+                                        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#onActionReset" text="Reset" />
                                     </buttons>
                                     <GridPane.margin>
                                         <Insets right="10.0" />

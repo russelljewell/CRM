@@ -1,5 +1,9 @@
 package utilities;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Contact;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,13 +35,17 @@ public abstract class ContactQuery {
         return rowsAffected;
     }
 
-    public static void query() throws SQLException {
+    public static ObservableList<Contact> query() throws SQLException {
+        ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CONTACTS";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             int contactID = rs.getInt("Contact_ID");
             String contactName = rs.getString("Contact_Name");
+            Contact contact = new Contact(contactID, contactName);
+            allContacts.add(contact);
         }
+        return allContacts;
     }
 }

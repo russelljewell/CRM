@@ -1,5 +1,9 @@
 package utilities;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Customer;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +43,8 @@ public abstract class CustomerQuery {
         return rowsAffected;
     }
 
-    public static void select() throws SQLException {
+    public static ObservableList<Customer> select() throws SQLException {
+        ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CUSTOMERS";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -50,6 +55,9 @@ public abstract class CustomerQuery {
             String postalCode = rs.getString("Postal_Code");
             String phoneNumber = rs.getString("Phone");
             int divisionID = rs.getInt("Division_ID");
+            Customer customer = new Customer(customerID, customerName, address, postalCode, phoneNumber, divisionID);
+            allCustomers.add(customer);
         }
+        return allCustomers;
     }
 }

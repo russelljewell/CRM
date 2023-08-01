@@ -1,5 +1,9 @@
 package utilities;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Country;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,13 +35,17 @@ public abstract class CountryQuery {
         return rowsAffected;
     }
 
-    public static void query() throws SQLException {
+    public static ObservableList<Country> query() throws SQLException {
+        ObservableList<Country> allCountries = FXCollections.observableArrayList();
         String sql = "SELECT * FROM COUNTRIES";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             int countryID = rs.getInt("Country_ID");
             String countryName = rs.getString("Country");
+            Country country = new Country(countryID, countryName);
+            allCountries.add(country);
         }
+        return allCountries;
     }
 }

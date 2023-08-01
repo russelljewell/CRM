@@ -1,5 +1,9 @@
 package utilities;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +37,8 @@ public abstract class UserQuery {
         return rowsAffected;
     }
 
-    public static void select() throws SQLException {
+    public static ObservableList<User> select() throws SQLException {
+        ObservableList<User> allUsers = FXCollections.observableArrayList();
         String sql = "SELECT * FROM USERS";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -41,6 +46,9 @@ public abstract class UserQuery {
             int userID = rs.getInt("User_ID");
             String userName = rs.getString("User_Name");
             String password = rs.getString("Password");
+            User user = new User(userID, userName, password);
+            allUsers.add(user);
         }
+        return allUsers;
     }
 }

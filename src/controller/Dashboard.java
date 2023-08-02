@@ -3,8 +3,11 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Customer;
+import utilities.AppointmentQuery;
+import utilities.CustomerQuery;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -28,7 +31,6 @@ public class Dashboard implements Initializable {
     public TableColumn<Appointment, String> allLocationColumn;
     public TableColumn<Appointment, String> allContactColumn;
     public TableColumn<Appointment, String> allTypeColumn;
-    public TableColumn<Appointment, LocalDateTime> allDateColumn;
     public TableColumn<Appointment, LocalDateTime> allStartColumn;
     public TableColumn<Appointment, LocalDateTime> allEndColumn;
     public TableView<Appointment> monthAppointmentTable;
@@ -40,7 +42,6 @@ public class Dashboard implements Initializable {
     public TableColumn<Appointment, String> monthLocationColumn;
     public TableColumn<Appointment, String> monthContactColumn;
     public TableColumn<Appointment, String> monthTypeColumn;
-    public TableColumn<Appointment, LocalDateTime> monthDateColumn;
     public TableColumn<Appointment, LocalDateTime> monthStartColumn;
     public TableColumn<Appointment, LocalDateTime> monthEndColumn;
     public TableView<Appointment> weekAppointmentTable;
@@ -52,7 +53,6 @@ public class Dashboard implements Initializable {
     public TableColumn<Appointment, String> weekLocationColumn;
     public TableColumn<Appointment, String> weekContactColumn;
     public TableColumn<Appointment, String> weekTypeColumn;
-    public TableColumn<Appointment, LocalDateTime> weekDateColumn;
     public TableColumn<Appointment, LocalDateTime> weekStartColumn;
     public TableColumn<Appointment, LocalDateTime> weekEndColumn;
     public Label detailsLabel;
@@ -79,21 +79,40 @@ public class Dashboard implements Initializable {
     public Label endLabel;
     public TextField endTextField;
 
-
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
     }
 
     public void onActionDeleteCustomer(ActionEvent actionEvent) {
-        initializeDetails();
+        if (customerTableView.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
+            alert.showAndWait();
+        } else {
+
+        }
     }
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
-        appointmentDetails();
+        if (customerTableView.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
+            alert.showAndWait();
+        } else {
+            appointmentDetails();
+        }
     }
 
     public void onActionDeleteAppointment(ActionEvent actionEvent) {
-        initializeDetails();
+        if (customerTableView.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
+            alert.showAndWait();
+        } else if (allAppointmentTable.getSelectionModel().getSelectedItem() == null ||
+                monthAppointmentTable.getSelectionModel().getSelectedItem() == null ||
+                weekAppointmentTable.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment from the Appointments table.");
+            alert.showAndWait();
+        } else {
+
+        }
     }
 
     public void onActionSave(ActionEvent actionEvent) {
@@ -212,7 +231,50 @@ public class Dashboard implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-       initializeDetails();
+    public void initialize(URL url, ResourceBundle resourceBundle){
+
+        initializeDetails();
+
+        customerTableView.setItems(CustomerQuery.select());
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        customerPostalColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        customerDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+
+        allAppointmentTable.setItems(AppointmentQuery.select());
+        allAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        allCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        allUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        allTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        allDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        allLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        allContactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        allTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        allStartColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        allEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+
+        monthAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        monthCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        monthUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        monthTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        monthDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        monthLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        monthContactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        monthTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        monthStartColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        monthEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+
+        weekAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        weekCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        weekUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        weekTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        weekDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        weekLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        weekContactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        weekTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        weekStartColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        weekEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
     }
 }

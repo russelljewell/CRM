@@ -43,20 +43,24 @@ public abstract class CustomerQuery {
         return rowsAffected;
     }
 
-    public static ObservableList<Customer> select() throws SQLException {
+    public static ObservableList<Customer> select() {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CUSTOMERS";
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        while(rs.next()) {
-            int customerID = rs.getInt("Customer_ID");
-            String customerName = rs.getString("Customer_Name");
-            String address = rs.getString("Address");
-            String postalCode = rs.getString("Postal_Code");
-            String phoneNumber = rs.getString("Phone");
-            int divisionID = rs.getInt("Division_ID");
-            Customer customer = new Customer(customerID, customerName, address, postalCode, phoneNumber, divisionID);
-            allCustomers.add(customer);
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int customerID = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                String address = rs.getString("Address");
+                String postalCode = rs.getString("Postal_Code");
+                String phoneNumber = rs.getString("Phone");
+                int divisionID = rs.getInt("Division_ID");
+                Customer customer = new Customer(customerID, customerName, address, postalCode, phoneNumber, divisionID);
+                allCustomers.add(customer);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return allCustomers;
     }

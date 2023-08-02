@@ -35,16 +35,20 @@ public abstract class ContactQuery {
         return rowsAffected;
     }
 
-    public static ObservableList<Contact> query() throws SQLException {
+    public static ObservableList<Contact> query() {
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CONTACTS";
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            int contactID = rs.getInt("Contact_ID");
-            String contactName = rs.getString("Contact_Name");
-            Contact contact = new Contact(contactID, contactName);
-            allContacts.add(contact);
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int contactID = rs.getInt("Contact_ID");
+                String contactName = rs.getString("Contact_Name");
+                Contact contact = new Contact(contactID, contactName);
+                allContacts.add(contact);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return allContacts;
     }

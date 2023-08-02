@@ -17,7 +17,7 @@ public class Customer {
         this.divisionID = divisionID;
     }
 
-    public static int getCustomerID() {
+    public static int getCustomerID(Customer selectedItem) {
         return customerID;
     }
 

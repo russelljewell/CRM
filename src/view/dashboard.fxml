@@ -394,15 +394,14 @@
                                             <children>
                                                 <TableView fx:id="allAppointmentTable" layoutX="225.0" layoutY="32.0" prefHeight="279.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
-                                                        <TableColumn fx:id="allAppointmentIdColumn" prefWidth="48.0" text="Apt. ID" />
+                                                        <TableColumn fx:id="allAppointmentIdColumn" prefWidth="48.0" text="Apt ID" />
                                                         <TableColumn fx:id="allCustomerIdColumn" prefWidth="61.0" text="Cust ID" />
                                                         <TableColumn fx:id="allUserIdColumn" prefWidth="65.0" text="User ID" />
                                                         <TableColumn fx:id="allTitleColumn" prefWidth="149.0" text="Title" />
-                                                        <TableColumn fx:id="allDescriptionColumn" prefWidth="192.0" text="Desc." />
+                                                        <TableColumn fx:id="allDescriptionColumn" prefWidth="192.0" text="Desc" />
                                                         <TableColumn fx:id="allLocationColumn" prefWidth="178.0" text="Location" />
                                                         <TableColumn fx:id="allContactColumn" prefWidth="160.0" text="Contact" />
                                                         <TableColumn fx:id="allTypeColumn" prefWidth="75.0" text="Type" />
-                                                        <TableColumn fx:id="allDateColumn" prefWidth="75.0" text="Date" />
                                                         <TableColumn fx:id="allStartColumn" prefWidth="75.0" text="Start" />
                                                         <TableColumn fx:id="allEndColumn" prefWidth="75.0" text="End" />
                                                     </columns>
@@ -420,15 +419,14 @@
                                             <children>
                                                 <TableView fx:id="monthAppointmentTable" layoutX="225.0" layoutY="32.0" prefHeight="279.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
-                                                        <TableColumn fx:id="monthAppointmentIdColumn" prefWidth="48.0" text="Apt. ID" />
+                                                        <TableColumn fx:id="monthAppointmentIdColumn" prefWidth="48.0" text="Apt ID" />
                                                         <TableColumn fx:id="monthCustomerIdColumn" prefWidth="61.0" text="Cust ID" />
                                                         <TableColumn fx:id="monthUserIdColumn" prefWidth="65.0" text="User ID" />
                                                         <TableColumn fx:id="monthTitleColumn" prefWidth="149.0" text="Title" />
-                                                        <TableColumn fx:id="monthDescriptionColumn" prefWidth="192.0" text="Desc." />
+                                                        <TableColumn fx:id="monthDescriptionColumn" prefWidth="192.0" text="Desc" />
                                                         <TableColumn fx:id="monthLocationColumn" prefWidth="178.0" text="Location" />
                                                         <TableColumn fx:id="monthContactColumn" prefWidth="160.0" text="Contact" />
                                                         <TableColumn fx:id="monthTypeColumn" prefWidth="75.0" text="Type" />
-                                                        <TableColumn fx:id="monthDateColumn" prefWidth="75.0" text="Date" />
                                                         <TableColumn fx:id="monthStartColumn" prefWidth="75.0" text="Start" />
                                                         <TableColumn fx:id="monthEndColumn" prefWidth="75.0" text="End" />
                                                     </columns>
@@ -446,15 +444,14 @@
                                             <children>
                                                 <TableView fx:id="weekAppointmentTable" layoutX="225.0" layoutY="32.0" prefHeight="279.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
-                                                        <TableColumn fx:id="weekAppointmentIdColumn" prefWidth="48.0" text="Apt. ID" />
+                                                        <TableColumn fx:id="weekAppointmentIdColumn" prefWidth="48.0" text="Apt ID" />
                                                         <TableColumn fx:id="weekCustomerIdColumn" prefWidth="61.0" text="Cust ID" />
                                                         <TableColumn fx:id="weekUserIdColumn" prefWidth="65.0" text="User ID" />
                                                         <TableColumn fx:id="weekTitleColumn" prefWidth="149.0" text="Title" />
-                                                        <TableColumn fx:id="weekDescriptionColumn" prefWidth="192.0" text="Desc." />
+                                                        <TableColumn fx:id="weekDescriptionColumn" prefWidth="192.0" text="Desc" />
                                                         <TableColumn fx:id="weekLocationColumn" prefWidth="178.0" text="Location" />
                                                         <TableColumn fx:id="weekContactColumn" prefWidth="160.0" text="Contact" />
                                                         <TableColumn fx:id="weekTypeColumn" prefWidth="75.0" text="Type" />
-                                                        <TableColumn fx:id="weekDateColumn" prefWidth="75.0" text="Date" />
                                                         <TableColumn fx:id="weekStartColumn" prefWidth="75.0" text="Start" />
                                                         <TableColumn fx:id="weekEndColumn" prefWidth="75.0" text="End" />
                                                     </columns>

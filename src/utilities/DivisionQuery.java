@@ -37,17 +37,21 @@ public abstract class DivisionQuery {
         return rowsAffected;
     }
 
-    public static ObservableList<Division> select() throws SQLException {
+    public static ObservableList<Division> select() {
         ObservableList<Division> allDivisions = FXCollections.observableArrayList();
         String sql = "SELECT * FROM FIRST_LEVEL_DIVISIONS";
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            int divisionID = rs.getInt("Division_ID");
-            String divisionName = rs.getString("Division");
-            int countryID = rs.getInt("Country_ID");
-            Division division = new Division(divisionID, divisionName, countryID);
-            allDivisions.add(division);
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int divisionID = rs.getInt("Division_ID");
+                String divisionName = rs.getString("Division");
+                int countryID = rs.getInt("Country_ID");
+                Division division = new Division(divisionID, divisionName, countryID);
+                allDivisions.add(division);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return allDivisions;
     }

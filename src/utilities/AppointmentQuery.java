@@ -50,6 +50,14 @@ public abstract class AppointmentQuery {
         return rowsAffected;
     }
 
+    public static int deleteAll(int customerID) throws SQLException {
+        String sql = "DELETE * FROM APPOINTMENTS WHERE Customer_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, customerID);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
+
     public static ObservableList<Appointment> select() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         String sql = "SELECT * FROM APPOINTMENTS";
@@ -76,3 +84,5 @@ public abstract class AppointmentQuery {
         return allAppointments;
     }
 }
+
+

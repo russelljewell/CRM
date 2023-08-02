@@ -10,6 +10,7 @@ import utilities.AppointmentQuery;
 import utilities.CustomerQuery;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -29,7 +30,7 @@ public class Dashboard implements Initializable {
     public TableColumn<Appointment, String> allTitleColumn;
     public TableColumn<Appointment, String> allDescriptionColumn;
     public TableColumn<Appointment, String> allLocationColumn;
-    public TableColumn<Appointment, String> allContactColumn;
+    public TableColumn<Appointment, Integer> allContactColumn;
     public TableColumn<Appointment, String> allTypeColumn;
     public TableColumn<Appointment, LocalDateTime> allStartColumn;
     public TableColumn<Appointment, LocalDateTime> allEndColumn;
@@ -40,7 +41,7 @@ public class Dashboard implements Initializable {
     public TableColumn<Appointment, String> monthTitleColumn;
     public TableColumn<Appointment, String> monthDescriptionColumn;
     public TableColumn<Appointment, String> monthLocationColumn;
-    public TableColumn<Appointment, String> monthContactColumn;
+    public TableColumn<Appointment, Integer> monthContactColumn;
     public TableColumn<Appointment, String> monthTypeColumn;
     public TableColumn<Appointment, LocalDateTime> monthStartColumn;
     public TableColumn<Appointment, LocalDateTime> monthEndColumn;
@@ -51,7 +52,7 @@ public class Dashboard implements Initializable {
     public TableColumn<Appointment, String> weekTitleColumn;
     public TableColumn<Appointment, String> weekDescriptionColumn;
     public TableColumn<Appointment, String> weekLocationColumn;
-    public TableColumn<Appointment, String> weekContactColumn;
+    public TableColumn<Appointment, Integer> weekContactColumn;
     public TableColumn<Appointment, String> weekTypeColumn;
     public TableColumn<Appointment, LocalDateTime> weekStartColumn;
     public TableColumn<Appointment, LocalDateTime> weekEndColumn;
@@ -83,12 +84,16 @@ public class Dashboard implements Initializable {
         customerDetails();
     }
 
-    public void onActionDeleteCustomer(ActionEvent actionEvent) {
+    public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         if (customerTableView.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
             alert.showAndWait();
         } else {
-
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                CustomerQuery.delete(Customer.getCustomerID(customerTableView.getSelectionModel().getSelectedItem()));
+            }
         }
     }
 
@@ -236,45 +241,25 @@ public class Dashboard implements Initializable {
         initializeDetails();
 
         customerTableView.setItems(CustomerQuery.select());
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        customerAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        customerPostalColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        customerDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerID"));
+        customerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
+        customerAddressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
+        customerPostalColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
+        customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
+        customerDivisionColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionID"));
 
         allAppointmentTable.setItems(AppointmentQuery.select());
-        allAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        allCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        allUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        allTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        allDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        allLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        allContactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
-        allTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        allStartColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-        allEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        allAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
+        allCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
+        allUserIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userID"));
+        allTypeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        allTitleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+        allLocationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+        allDescriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+        allContactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactID"));
+        allStartColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("start"));
+        allEndColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
 
-        monthAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        monthCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        monthUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        monthTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        monthDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        monthLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        monthContactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
-        monthTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        monthStartColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-        monthEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
 
-        weekAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        weekCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        weekUserIdColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        weekTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        weekDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        weekLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        weekContactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
-        weekTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        weekStartColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-        weekEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
     }
 }

@@ -92,6 +92,7 @@ public class Dashboard implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
+                AppointmentQuery.deleteAll(Customer.getCustomerID(customerTableView.getSelectionModel().getSelectedItem()));
                 CustomerQuery.delete(Customer.getCustomerID(customerTableView.getSelectionModel().getSelectedItem()));
             }
         }

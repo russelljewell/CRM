@@ -1,27 +1,27 @@
 package model;
 
 public class Contact {
-    private static int contactID;
-    private static String contactName;
+    private int contactID;
+    private String contactName;
 
     public Contact(int contactID, String contactName) {
         this.contactID = contactID;
         this.contactName = contactName;
     }
 
-    public static int getContactID() {
+    public int getContactID() {
         return contactID;
     }
 
-    public static void setContactID(int contactID) {
-        Contact.contactID = contactID;
+    public void setContactID(int contactID) {
+        this.contactID = contactID;
     }
 
-    public static String getContactName() {
+    public String getContactName() {
         return contactName;
     }
 
-    public static void setContactName(String contactName) {
-        Contact.contactName = contactName;
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 }

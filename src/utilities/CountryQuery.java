@@ -35,7 +35,7 @@ public abstract class CountryQuery {
         return rowsAffected;
     }
 
-    public static ObservableList<Country> query() {
+    public static ObservableList<Country> select() {
         ObservableList<Country> allCountries = FXCollections.observableArrayList();
         String sql = "SELECT * FROM COUNTRIES";
         try {

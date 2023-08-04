@@ -6,12 +6,11 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -73,12 +72,12 @@
                                 </GridPane>
                                 <GridPane GridPane.rowIndex="2">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
                                         <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2">
@@ -88,16 +87,39 @@
                                             </buttons>
                                         </ButtonBar>
                                         <Label text="Appointments" GridPane.columnIndex="1" />
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <RadioButton fx:id="allRadio" mnemonicParsing="false" selected="true" text="All" GridPane.halignment="CENTER">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="appointmentToggle" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="monthRadio" mnemonicParsing="false" text="Month" toggleGroup="$appointmentToggle" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                    <RadioButton fx:id="weekRadio" mnemonicParsing="false" text="Week" toggleGroup="$appointmentToggle" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                                 </children>
+                              </GridPane>
                                     </children>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" />
+                           </GridPane.margin>
                                 </GridPane>
-                                <TableView fx:id="customerTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                     <columns>
-                                        <TableColumn fx:id="customerIdColumn" prefWidth="34.0" text="ID" />
-                                        <TableColumn fx:id="customerNameColumn" prefWidth="179.0" text="Name" />
-                                        <TableColumn fx:id="customerAddressColumn" minWidth="0.0" prefWidth="219.0" text="Address" />
-                                        <TableColumn fx:id="customerPostalColumn" prefWidth="76.0" text="Postal" />
-                                        <TableColumn fx:id="customerPhoneColumn" prefWidth="151.0" text="Phone" />
-                                        <TableColumn fx:id="customerDivisionColumn" prefWidth="153.0" text="Division" />
+                                        <TableColumn fx:id="idCol" prefWidth="34.0" text="ID" />
+                                        <TableColumn fx:id="nameCol" prefWidth="179.0" text="Name" />
+                                        <TableColumn fx:id="addressCol" minWidth="0.0" prefWidth="219.0" text="Address" />
+                                        <TableColumn fx:id="postalCol" prefWidth="76.0" text="Postal" />
+                                        <TableColumn fx:id="phoneCol" prefWidth="151.0" text="Phone" />
+                                        <TableColumn fx:id="divisionCol" prefWidth="153.0" text="Division" />
                                     </columns>
                                     <GridPane.margin>
                                         <Insets bottom="10.0" top="10.0" />
@@ -131,7 +153,7 @@
                                 <Insets left="10.0" />
                             </GridPane.margin>
                             <children>
-                                <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="12">
+                                <ButtonBar prefHeight="30.0" prefWidth="200.0" GridPane.rowIndex="12">
                                     <buttons>
                                         <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onActionSave" text="Save" />
                                         <Button fx:id="resetButton" mnemonicParsing="false" onAction="#onActionReset" text="Reset" />
@@ -386,88 +408,26 @@
                                 <Button fx:id="exitButton" mnemonicParsing="false" onAction="#onActionExit" text="Exit" />
                             </buttons>
                         </ButtonBar>
-                        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-                            <tabs>
-                                <Tab text="All">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TableView fx:id="allAppointmentTable" layoutX="225.0" layoutY="32.0" prefHeight="279.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <columns>
-                                                        <TableColumn fx:id="allAppointmentIdColumn" prefWidth="48.0" text="Apt ID" />
-                                                        <TableColumn fx:id="allCustomerIdColumn" prefWidth="61.0" text="Cust ID" />
-                                                        <TableColumn fx:id="allUserIdColumn" prefWidth="65.0" text="User ID" />
-                                                        <TableColumn fx:id="allTitleColumn" prefWidth="149.0" text="Title" />
-                                                        <TableColumn fx:id="allDescriptionColumn" prefWidth="192.0" text="Desc" />
-                                                        <TableColumn fx:id="allLocationColumn" prefWidth="178.0" text="Location" />
-                                                        <TableColumn fx:id="allContactColumn" prefWidth="160.0" text="Contact" />
-                                                        <TableColumn fx:id="allTypeColumn" prefWidth="75.0" text="Type" />
-                                                        <TableColumn fx:id="allStartColumn" prefWidth="75.0" text="Start" />
-                                                        <TableColumn fx:id="allEndColumn" prefWidth="75.0" text="End" />
-                                                    </columns>
-                                                    <columnResizePolicy>
-                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                    </columnResizePolicy>
-                                                </TableView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Month">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TableView fx:id="monthAppointmentTable" layoutX="225.0" layoutY="32.0" prefHeight="279.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <columns>
-                                                        <TableColumn fx:id="monthAppointmentIdColumn" prefWidth="48.0" text="Apt ID" />
-                                                        <TableColumn fx:id="monthCustomerIdColumn" prefWidth="61.0" text="Cust ID" />
-                                                        <TableColumn fx:id="monthUserIdColumn" prefWidth="65.0" text="User ID" />
-                                                        <TableColumn fx:id="monthTitleColumn" prefWidth="149.0" text="Title" />
-                                                        <TableColumn fx:id="monthDescriptionColumn" prefWidth="192.0" text="Desc" />
-                                                        <TableColumn fx:id="monthLocationColumn" prefWidth="178.0" text="Location" />
-                                                        <TableColumn fx:id="monthContactColumn" prefWidth="160.0" text="Contact" />
-                                                        <TableColumn fx:id="monthTypeColumn" prefWidth="75.0" text="Type" />
-                                                        <TableColumn fx:id="monthStartColumn" prefWidth="75.0" text="Start" />
-                                                        <TableColumn fx:id="monthEndColumn" prefWidth="75.0" text="End" />
-                                                    </columns>
-                                                    <columnResizePolicy>
-                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                    </columnResizePolicy>
-                                                </TableView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Week">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TableView fx:id="weekAppointmentTable" layoutX="225.0" layoutY="32.0" prefHeight="279.0" prefWidth="1180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <columns>
-                                                        <TableColumn fx:id="weekAppointmentIdColumn" prefWidth="48.0" text="Apt ID" />
-                                                        <TableColumn fx:id="weekCustomerIdColumn" prefWidth="61.0" text="Cust ID" />
-                                                        <TableColumn fx:id="weekUserIdColumn" prefWidth="65.0" text="User ID" />
-                                                        <TableColumn fx:id="weekTitleColumn" prefWidth="149.0" text="Title" />
-                                                        <TableColumn fx:id="weekDescriptionColumn" prefWidth="192.0" text="Desc" />
-                                                        <TableColumn fx:id="weekLocationColumn" prefWidth="178.0" text="Location" />
-                                                        <TableColumn fx:id="weekContactColumn" prefWidth="160.0" text="Contact" />
-                                                        <TableColumn fx:id="weekTypeColumn" prefWidth="75.0" text="Type" />
-                                                        <TableColumn fx:id="weekStartColumn" prefWidth="75.0" text="Start" />
-                                                        <TableColumn fx:id="weekEndColumn" prefWidth="75.0" text="End" />
-                                                    </columns>
-                                                    <columnResizePolicy>
-                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                    </columnResizePolicy>
-                                                </TableView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                            </tabs>
-                            <GridPane.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </GridPane.margin>
-                        </TabPane>
+                  <TableView fx:id="appointmentTable" prefHeight="279.0" prefWidth="1180.0">
+                     <columns>
+                        <TableColumn fx:id="appointmentIdCol" prefWidth="48.0" text="Apt ID" />
+                        <TableColumn fx:id="customerIdCol" prefWidth="61.0" text="Cust ID" />
+                        <TableColumn fx:id="userIdCol" prefWidth="65.0" text="User ID" />
+                        <TableColumn fx:id="titleCol" prefWidth="149.0" text="Title" />
+                        <TableColumn fx:id="descriptionCol" prefWidth="192.0" text="Desc" />
+                        <TableColumn fx:id="locationCol" prefWidth="178.0" text="Location" />
+                        <TableColumn fx:id="contactCol" prefWidth="160.0" text="Contact" />
+                        <TableColumn fx:id="typeCol" prefWidth="75.0" text="Type" />
+                        <TableColumn fx:id="startCol" prefWidth="75.0" text="Start" />
+                        <TableColumn fx:id="endCol" prefWidth="75.0" text="End" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="5.0" />
+                     </GridPane.margin>
+                  </TableView>
                     </children>
                 </GridPane>
             </children>

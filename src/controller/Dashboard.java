@@ -6,8 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Customer;
-import utilities.AppointmentQuery;
-import utilities.CustomerQuery;
+import utilities.*;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -16,46 +15,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Dashboard implements Initializable {
-    public TableView<Customer> customerTableView;
-    public TableColumn<Customer, Integer> customerIdColumn;
-    public TableColumn<Customer, String> customerNameColumn;
-    public TableColumn<Customer, String> customerAddressColumn;
-    public TableColumn<Customer, String> customerPostalColumn;
-    public TableColumn<Customer, String> customerPhoneColumn;
-    public TableColumn<Customer, Integer> customerDivisionColumn;
-    public TableView<Appointment> allAppointmentTable;
-    public TableColumn<Appointment, Integer> allAppointmentIdColumn;
-    public TableColumn<Appointment, Integer> allCustomerIdColumn;
-    public TableColumn<Appointment, Integer> allUserIdColumn;
-    public TableColumn<Appointment, String> allTitleColumn;
-    public TableColumn<Appointment, String> allDescriptionColumn;
-    public TableColumn<Appointment, String> allLocationColumn;
-    public TableColumn<Appointment, Integer> allContactColumn;
-    public TableColumn<Appointment, String> allTypeColumn;
-    public TableColumn<Appointment, LocalDateTime> allStartColumn;
-    public TableColumn<Appointment, LocalDateTime> allEndColumn;
-    public TableView<Appointment> monthAppointmentTable;
-    public TableColumn<Appointment, Integer> monthAppointmentIdColumn;
-    public TableColumn<Appointment, Integer> monthCustomerIdColumn;
-    public TableColumn<Appointment, Integer> monthUserIdColumn;
-    public TableColumn<Appointment, String> monthTitleColumn;
-    public TableColumn<Appointment, String> monthDescriptionColumn;
-    public TableColumn<Appointment, String> monthLocationColumn;
-    public TableColumn<Appointment, Integer> monthContactColumn;
-    public TableColumn<Appointment, String> monthTypeColumn;
-    public TableColumn<Appointment, LocalDateTime> monthStartColumn;
-    public TableColumn<Appointment, LocalDateTime> monthEndColumn;
-    public TableView<Appointment> weekAppointmentTable;
-    public TableColumn<Appointment, Integer> weekAppointmentIdColumn;
-    public TableColumn<Appointment, Integer> weekCustomerIdColumn;
-    public TableColumn<Appointment, Integer> weekUserIdColumn;
-    public TableColumn<Appointment, String> weekTitleColumn;
-    public TableColumn<Appointment, String> weekDescriptionColumn;
-    public TableColumn<Appointment, String> weekLocationColumn;
-    public TableColumn<Appointment, Integer> weekContactColumn;
-    public TableColumn<Appointment, String> weekTypeColumn;
-    public TableColumn<Appointment, LocalDateTime> weekStartColumn;
-    public TableColumn<Appointment, LocalDateTime> weekEndColumn;
+    
     public Label detailsLabel;
     public Label customerIdLabel;
     public Label customerIdText;
@@ -79,26 +39,48 @@ public class Dashboard implements Initializable {
     public TextField startTextField;
     public Label endLabel;
     public TextField endTextField;
+    public ToggleGroup appointmentToggle;
+    public TableView<Customer> customerTable;
+    public TableColumn idCol;
+    public TableColumn nameCol;
+    public TableColumn addressCol;
+    public TableColumn postalCol;
+    public TableColumn phoneCol;
+    public TableColumn divisionCol;
+    public TableView<Appointment> appointmentTable;
+    public TableColumn appointmentIdCol;
+    public TableColumn customerIdCol;
+    public TableColumn userIdCol;
+    public TableColumn titleCol;
+    public TableColumn descriptionCol;
+    public TableColumn locationCol;
+    public TableColumn contactCol;
+    public TableColumn typeCol;
+    public TableColumn startCol;
+    public TableColumn endCol;
+    public RadioButton allRadio;
+    public RadioButton monthRadio;
+    public RadioButton weekRadio;
 
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
     }
 
     public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
-        if (customerTableView.getSelectionModel().getSelectedItem() == null) {
+        if (customerTable.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
             alert.showAndWait();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
-
+                //initializeDetails();
             }
         }
     }
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
-        if (customerTableView.getSelectionModel().getSelectedItem() == null) {
+        if (customerTable.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
             alert.showAndWait();
         } else {
@@ -107,16 +89,14 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionDeleteAppointment(ActionEvent actionEvent) {
-        if (customerTableView.getSelectionModel().getSelectedItem() == null) {
+        if (customerTable.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
             alert.showAndWait();
-        } else if (allAppointmentTable.getSelectionModel().getSelectedItem() == null ||
-                monthAppointmentTable.getSelectionModel().getSelectedItem() == null ||
-                weekAppointmentTable.getSelectionModel().getSelectedItem() == null) {
+        } else if (appointmentTable.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment from the Appointments table.");
             alert.showAndWait();
         } else {
-
+            //initializeDetails();
         }
     }
 
@@ -131,6 +111,19 @@ public class Dashboard implements Initializable {
         if (!customerIdLabel.isVisible()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
             alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Unsaved changes will be lost, are you sure?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                Customer selected = customerTable.getSelectionModel().getSelectedItem();
+                customerIdText.setText(String.valueOf(selected.getCustomerID()));
+                customerNameTextField.setText(selected.getCustomerName());
+                addressTextField.setText(selected.getAddress());
+                postalTextField.setText(selected.getPostalCode());
+                phoneTextField.setText(selected.getPhoneNumber());
+                // countryComboBox
+                //divisionComboBox
+            }
         }
     }
 
@@ -240,26 +233,56 @@ public class Dashboard implements Initializable {
 
         initializeDetails();
 
-        customerTableView.setItems(CustomerQuery.select());
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerID"));
-        customerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
-        customerAddressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
-        customerPostalColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
-        customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
-        customerDivisionColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionID"));
+        customerTable.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
+            if (newSelection != null) {
+                customerDetails();
+                Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+                customerIdText.setText(String.valueOf(selectedCustomer.getCustomerID()));
+                customerNameTextField.setText(selectedCustomer.getCustomerName());
+                addressTextField.setText(selectedCustomer.getAddress());
+                postalTextField.setText(selectedCustomer.getPostalCode());
+                phoneTextField.setText(selectedCustomer.getPhoneNumber());
+                countryComboBox.setItems(CountryQuery.select());
+                divisionComboBox.setItems(DivisionQuery.select());
+                appointmentTable.setItems(AppointmentQuery.selectAssociated(selectedCustomer.getCustomerID()));
+            }
+        });
 
-        allAppointmentTable.setItems(AppointmentQuery.select());
-        allAppointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
-        allCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
-        allUserIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userID"));
-        allTypeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
-        allTitleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
-        allLocationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
-        allDescriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
-        allContactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactID"));
-        allStartColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("start"));
-        allEndColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
+        appointmentTable.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
+            if (newSelection != null) {
+                appointmentDetails();
+                Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+                appointmentIdText.setText(String.valueOf(selectedAppointment.getAppointmentID()));
+                customerIdText.setText(String.valueOf(selectedAppointment.getCustomerID()));
+                customerNameTextField.setText(String.valueOf(selectedAppointment.getUserID()));
+                addressTextField.setText(selectedAppointment.getTitle());
+                postalTextField.setText(selectedAppointment.getDescription());
+                phoneTextField.setText(selectedAppointment.getLocation());
+                countryComboBox.setItems(ContactQuery.select());
+                divisionComboBox.setItems(DivisionQuery.select());
+                //dateDatePicker
+                startTextField.setText(String.valueOf(selectedAppointment.getStart()));
+                endTextField.setText(String.valueOf(selectedAppointment.getEnd()));
+            }
+        });
 
+        customerTable.setItems(CustomerQuery.select());
+        idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerID"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
+        postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
+        divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionID"));
 
+        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
+        userIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userID"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactID"));
+        startCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
     }
 }

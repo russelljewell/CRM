@@ -35,7 +35,7 @@ public abstract class ContactQuery {
         return rowsAffected;
     }
 
-    public static ObservableList<Contact> query() {
+    public static ObservableList<Contact> select() {
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CONTACTS";
         try {

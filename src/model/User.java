@@ -1,9 +1,9 @@
 package model;
 
 public class User {
-    private static int userID;
-    private static String userName;
-    private static String password;
+    private int userID;
+    private String userName;
+    private String password;
 
     public User(int userID, String userName, String password) {
         this.userID = userID;
@@ -11,27 +11,25 @@ public class User {
         this.password = password;
     }
 
-    public static int getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public static void setUserID(int userID) {
-        User.userID = userID;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public static String getUserName() {
+    public String getUserName() {
         return userName;
     }
 
-    public static void setUserName(String userName) {
-        User.userName = userName;
-    }
+    public void setUserName(String userName) { this.userName = userName; }
 
-    public static String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public static void setPassword(String password) {
-        User.password = password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

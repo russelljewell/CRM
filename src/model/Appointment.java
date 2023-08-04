@@ -3,16 +3,16 @@ package model;
 import java.time.LocalDateTime;
 
 public class Appointment {
-    private static int appointmentID;
-    private static String title;
-    private static String description;
-    private static String location;
-    private static String type;
-    private static LocalDateTime start;
-    private static LocalDateTime end;
-    private static int customerID;
-    private static int userID;
-    private static int contactID;
+    private int appointmentID;
+    private String title;
+    private String description;
+    private String location;
+    private String type;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private int customerID;
+    private int userID;
+    private int contactID;
 
     public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID) {
         this.appointmentID = appointmentID;
@@ -27,83 +27,83 @@ public class Appointment {
         this.contactID = contactID;
     }
 
-    public static int getAppointmentID() {
+    public int getAppointmentID() {
         return appointmentID;
     }
 
-    public static void setAppointmentID(int appointmentID) {
-        Appointment.appointmentID = appointmentID;
+    public void setAppointmentID(int appointmentID) {
+        this.appointmentID = appointmentID;
     }
 
-    public static String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public static void setTitle(String title) {
-        Appointment.title = title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public static String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public static void setDescription(String description) {
-        Appointment.description = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public static String getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public static void setLocation(String location) {
-        Appointment.location = location;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public static String getType() {
+    public String getType() {
         return type;
     }
 
-    public static void setType(String type) {
-        Appointment.type = type;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public static LocalDateTime getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public static void setStart(LocalDateTime start) {
-        Appointment.start = start;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
-    public static LocalDateTime getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public static void setEnd(LocalDateTime end) {
-        Appointment.end = end;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 
-    public static int getCustomerID() {
+    public int getCustomerID() {
         return customerID;
     }
 
-    public static void setCustomerID(int customerID) {
-        Appointment.customerID = customerID;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
 
-    public static int getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public static void setUserID(int userID) {
-        Appointment.userID = userID;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public static int getContactID() {
+    public int getContactID() {
         return contactID;
     }
 
-    public static void setContactID(int contactID) {
-        Appointment.contactID = contactID;
+    public void setContactID(int contactID) {
+        this.contactID = contactID;
     }
 }

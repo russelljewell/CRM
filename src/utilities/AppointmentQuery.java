@@ -83,6 +83,33 @@ public abstract class AppointmentQuery {
         }
         return allAppointments;
     }
+
+    public static ObservableList<Appointment> selectAssociated(int selectedCustomerID) {
+        ObservableList<Appointment> allAssociated = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM APPOINTMENTS WHERE Customer_ID = ?";
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setInt(1, selectedCustomerID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int appointmentID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
+                int customerID = rs.getInt("Customer_ID");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+                Appointment appointment = new Appointment(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
+                allAssociated.add(appointment);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return allAssociated;
+    }
 }
 
 

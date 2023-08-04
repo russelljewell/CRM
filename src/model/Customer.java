@@ -1,12 +1,12 @@
 package model;
 
 public class Customer {
-    private static int customerID;
-    private static String customerName;
-    private static String address;
-    private static String postalCode;
-    private static String phoneNumber;
-    private static int divisionID;
+    private int customerID;
+    private String customerName;
+    private String address;
+    private String postalCode;
+    private String phoneNumber;
+    private int divisionID;
 
     public Customer(int customerID, String customerName, String address, String postalCode, String phoneNumber, int divisionID) {
         this.customerID = customerID;
@@ -17,51 +17,51 @@ public class Customer {
         this.divisionID = divisionID;
     }
 
-    public static int getCustomerID() {
+    public int getCustomerID() {
         return customerID;
     }
 
-    public static void setCustomerID(int customerID) {
-        Customer.customerID = customerID;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
 
-    public static String getCustomerName() {
+    public String getCustomerName() {
         return customerName;
     }
 
-    public static void setCustomerName(String customerName) {
-        Customer.customerName = customerName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public static String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public static void setAddress(String address) {
-        Customer.address = address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public static String getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public static void setPostalCode(String postalCode) {
-        Customer.postalCode = postalCode;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public static String getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public static void setPhoneNumber(String phoneNumber) {
-        Customer.phoneNumber = phoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public static int getDivisionID() {
+    public int getDivisionID() {
         return divisionID;
     }
 
-    public static void setDivisionID(int divisionID) {
-        Customer.divisionID = divisionID;
+    public void setDivisionID(int divisionID) {
+        this.divisionID = divisionID;
     }
 }

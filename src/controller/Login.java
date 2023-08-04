@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
+import utilities.Alerts;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -20,11 +21,7 @@ public class Login implements Initializable {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            System.exit(0);
-        }
+        Alerts.exit();
     }
 
     @Override

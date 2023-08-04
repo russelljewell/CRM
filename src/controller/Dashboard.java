@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Dashboard implements Initializable {
-    
+
     public Label detailsLabel;
     public Label customerIdLabel;
     public Label customerIdText;
@@ -68,8 +68,7 @@ public class Dashboard implements Initializable {
 
     public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
-            alert.showAndWait();
+            Alerts.selectCustomer();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
@@ -81,8 +80,7 @@ public class Dashboard implements Initializable {
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
-            alert.showAndWait();
+            Alerts.selectCustomer();
         } else {
             appointmentDetails();
         }
@@ -90,11 +88,9 @@ public class Dashboard implements Initializable {
 
     public void onActionDeleteAppointment(ActionEvent actionEvent) {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
-            alert.showAndWait();
+            Alerts.selectCustomer();
         } else if (appointmentTable.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment from the Appointments table.");
-            alert.showAndWait();
+            Alerts.selectAppointment();
         } else {
             //initializeDetails();
         }
@@ -102,15 +98,13 @@ public class Dashboard implements Initializable {
 
     public void onActionSave(ActionEvent actionEvent) {
         if (!customerIdLabel.isVisible()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customer table.");
-            alert.showAndWait();
+            Alerts.selectCustomer();
         }
     }
 
     public void onActionReset(ActionEvent actionEvent) {
         if (!customerIdLabel.isVisible()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the Customers table.");
-            alert.showAndWait();
+            Alerts.selectCustomer();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Unsaved changes will be lost, are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
@@ -131,11 +125,7 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            System.exit(0);
-        }
+        Alerts.exit();
     }
 
     public void customerDetails() {

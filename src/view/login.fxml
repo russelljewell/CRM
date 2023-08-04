@@ -2,13 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Login">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Login">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -47,11 +48,6 @@
                 </Button>
             </children>
         </GridPane>
-        <TextField fx:id="passwordTextField" alignment="CENTER" promptText="Password" GridPane.rowIndex="5">
-            <GridPane.margin>
-                <Insets left="50.0" right="50.0" />
-            </GridPane.margin>
-        </TextField>
         <TextField fx:id="usernameTextField" alignment="CENTER" layoutX="60.0" layoutY="115.0" promptText="Username" GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets left="50.0" right="50.0" />
@@ -62,5 +58,10 @@
                 <Insets top="10.0" />
             </GridPane.margin>
         </Text>
+      <PasswordField alignment="CENTER" promptText="Password" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="50.0" right="50.0" />
+         </GridPane.margin>
+      </PasswordField>
     </children>
 </GridPane>

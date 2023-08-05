@@ -1,11 +1,10 @@
 package utilities;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
-public class Alert {
+public class Alerts {
 
     public static void selectCustomer() {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Please select a customer from the table.");

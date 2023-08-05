@@ -3,7 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
-import utilities.Alert;
+import utilities.Alerts;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,7 +16,7 @@ public class Login implements Initializable {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
-        Alert.exit();
+        Alerts.exit();
     }
 
     @Override

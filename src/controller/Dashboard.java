@@ -7,7 +7,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import model.Customer;
 import utilities.*;
-import utilities.Alert;
+import utilities.Alerts;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -78,9 +78,9 @@ public class Dashboard implements Initializable {
 
     public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
-            Alert.selectCustomer();
+            Alerts.selectCustomer();
         } else {
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
@@ -93,7 +93,7 @@ public class Dashboard implements Initializable {
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
-            Alert.selectCustomer();
+            Alerts.selectCustomer();
         } else {
             appointmentDetails();
             appointmentIdText.setText("(Auto)");
@@ -110,9 +110,9 @@ public class Dashboard implements Initializable {
 
     public void onActionDeleteAppointment(ActionEvent actionEvent) throws SQLException {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
-            Alert.selectCustomer();
+            Alerts.selectCustomer();
         } else if (appointmentTable.getSelectionModel().getSelectedItem() == null) {
-            Alert.selectAppointment();
+            Alerts.selectAppointment();
         } else {
             Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
             AppointmentQuery.delete(selectedAppointment.getAppointmentID());
@@ -122,7 +122,7 @@ public class Dashboard implements Initializable {
 
     public void onActionSave(ActionEvent actionEvent) {
         if (!customerIdLabel.isVisible()) {
-            Alert.selectCustomer();
+            Alerts.selectCustomer();
         } else {
             if (!appointmentIdLabel.isVisible()) {
 
@@ -134,9 +134,9 @@ public class Dashboard implements Initializable {
 
     public void onActionReset(ActionEvent actionEvent) {
         if (!customerIdLabel.isVisible()) {
-            Alert.selectCustomer();
+            Alerts.selectCustomer();
         } else {
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION, "Unsaved changes will be lost, are you sure?", ButtonType.YES, ButtonType.NO);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Unsaved changes will be lost, are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 Customer selected = customerTable.getSelectionModel().getSelectedItem();
@@ -175,7 +175,7 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
-        Alert.exit();
+        Alerts.exit();
     }
 
     public void customerDetails() {

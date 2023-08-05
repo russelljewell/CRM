@@ -2,15 +2,10 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
-import utilities.Alerts;
+import utilities.Alert;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -21,7 +16,7 @@ public class Login implements Initializable {
     }
 
     public void onActionExit(ActionEvent actionEvent) {
-        Alerts.exit();
+        Alert.exit();
     }
 
     @Override

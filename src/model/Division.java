@@ -37,6 +37,6 @@ public class Division {
 
     @Override
     public String toString() {
-        return (divisionName);
+        return divisionName;
     }
 }

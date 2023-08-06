@@ -34,5 +34,5 @@ public class User {
     }
 
     @Override
-    public String toString() { return (Integer.toString(userID)); }
+    public String toString() { return userName; }
 }

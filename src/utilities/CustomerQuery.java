@@ -45,7 +45,7 @@ public abstract class CustomerQuery {
 
     public static ObservableList<Customer> select() {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM CUSTOMERS";
+        String sql = "SELECT CUSTOMERS.Customer_ID, Customer_Name, Address, Postal_Code, Phone, CUSTOMERS.Division_ID, FIRST_LEVEL_DIVISIONS.Division, FIRST_LEVEL_DIVISIONS.Country_ID, COUNTRIES.Country FROM CUSTOMERS, FIRST_LEVEL_DIVISIONS, COUNTRIES WHERE FIRST_LEVEL_DIVISIONS.Country_ID = COUNTRIES.Country_ID AND CUSTOMERS.Division_ID = FIRST_LEVEL_DIVISIONS.Division_ID";
         try {
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -56,7 +56,10 @@ public abstract class CustomerQuery {
                 String postalCode = rs.getString("Postal_Code");
                 String phoneNumber = rs.getString("Phone");
                 int divisionID = rs.getInt("Division_ID");
-                Customer customer = new Customer(customerID, customerName, address, postalCode, phoneNumber, divisionID);
+                int countryID = rs.getInt("Country_ID");
+                String divisionName = rs.getString("Division");
+                String countryName = rs.getString("Country");
+                Customer customer = new Customer(customerID, customerName, address, postalCode, phoneNumber, divisionID, countryID, divisionName, countryName);
                 allCustomers.add(customer);
             }
         } catch (SQLException throwables) {

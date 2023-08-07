@@ -1,18 +1,18 @@
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Appointment;
-import model.Country;
-import model.Customer;
+import model.*;
 import utilities.*;
 import utilities.Alerts;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -33,9 +33,9 @@ public class Dashboard implements Initializable {
     public Label phoneLabel;
     public TextField phoneTextField;
     public Label countryLabel;
-    public ComboBox countryComboBox;
+    public ComboBox<Country> countryComboBox;
     public Label divisionLabel;
-    public ComboBox divisionComboBox;
+    public ComboBox<Division> divisionComboBox;
     public Label dateLabel;
     public DatePicker dateDatePicker;
     public Label startLabel;
@@ -65,6 +65,8 @@ public class Dashboard implements Initializable {
     public RadioButton monthRadio;
     public RadioButton weekRadio;
     public RadioButton associatedRadio;
+    public ComboBox<User> userComboBox;
+    public ComboBox<Contact> contactComboBox;
 
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
@@ -100,9 +102,9 @@ public class Dashboard implements Initializable {
             postalTextField.clear();
             phoneTextField.clear();
             countryComboBox.setValue(null);
-            countryComboBox.setItems(ContactQuery.contacts());
+            contactComboBox.setItems(ContactQuery.contacts());
             divisionComboBox.setValue(null);
-            divisionComboBox.setItems(UserQuery.users());
+            userComboBox.setItems(UserQuery.users());
             dateDatePicker.setValue(null);
             startTextField.clear();
             endTextField.clear();
@@ -147,8 +149,8 @@ public class Dashboard implements Initializable {
                 Timestamp start = Timestamp.valueOf((startTextField.getText()));
                 Timestamp end = Timestamp.valueOf((endTextField.getText()));
                 int customerID = Integer.parseInt(customerIdText.getText());
-                int userID = Integer.parseInt(String.valueOf(divisionComboBox.getValue()));
-                int contactID = Integer.parseInt(String.valueOf(countryComboBox.getValue()));
+                int userID = Integer.parseInt(String.valueOf(userComboBox.getValue()));
+                int contactID = Integer.parseInt(String.valueOf(contactComboBox.getValue()));
                 if (appointmentIdText.equals("(Auto)")) {
                     AppointmentQuery.insert(title, description, location, type, start, end, customerID, userID, contactID);
                 } else {
@@ -172,8 +174,8 @@ public class Dashboard implements Initializable {
                     addressTextField.setText(selected.getAddress());
                     postalTextField.setText(selected.getPostalCode());
                     phoneTextField.setText(selected.getPhoneNumber());
-                    countryComboBox.setValue(CountryQuery.associatedCountry(selected.getDivisionID()));
-                    divisionComboBox.setValue(selected.getDivisionID());
+                    //countryComboBox.setValue(DivisionQuery.associatedCountry(selected.getDivisionID()));
+                    //divisionComboBox.setValue(selected.getDivisionID());
                 } else if (detailsLabel.equals("Modify Appointment")) {
                     Appointment selected = appointmentTable.getSelectionModel().getSelectedItem();
                     appointmentIdText.setText(String.valueOf(selected.getAppointmentID()));
@@ -231,13 +233,19 @@ public class Dashboard implements Initializable {
                 addressTextField.setText(selectedCustomer.getAddress());
                 postalTextField.setText(selectedCustomer.getPostalCode());
                 phoneTextField.setText(selectedCustomer.getPhoneNumber());
-                countryComboBox.setItems(CountryQuery.countries());
-                try {
-                    countryComboBox.setValue(CountryQuery.associatedCountry(selectedCustomer.getDivisionID()));
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                for (Country country : countryComboBox.getItems()) {
+                    if (country.getCountryID() == selectedCustomer.getCountryID() ) {
+                        countryComboBox.setValue(country);
+                        break;
+                    }
                 }
-                divisionComboBox.setValue(selectedCustomer.getDivisionID());
+                for (Division division : divisionComboBox.getItems()) {
+                    if (division.getDivisionID() == selectedCustomer.getDivisionID()) {
+                        divisionComboBox.setValue(division);
+                        break;
+                    }
+                }
+
                 appointmentTable.setItems(AppointmentQuery.selectAssociated(selectedCustomer.getCustomerID()));
             }
         });
@@ -253,8 +261,16 @@ public class Dashboard implements Initializable {
                 addressTextField.setText(selectedAppointment.getDescription());
                 postalTextField.setText(selectedAppointment.getLocation());
                 phoneTextField.setText(selectedAppointment.getType());
-                countryComboBox.setItems(ContactQuery.contacts());
-                divisionComboBox.setItems(UserQuery.users());
+                for (Contact contact : contactComboBox.getItems()) {
+                    if (contact.getContactID() == selectedAppointment.getContactID()) {
+                        contactComboBox.setValue(contact);
+                    }
+                }
+                for (User user : userComboBox.getItems()) {
+                    if (user.getUserID() == selectedAppointment.getUserID()) {
+                        userComboBox.setValue(user);
+                    }
+                }
                 //dateDatePicker
                 startTextField.setText(String.valueOf(selectedAppointment.getStart()));
                 endTextField.setText(String.valueOf(selectedAppointment.getEnd()));
@@ -267,7 +283,7 @@ public class Dashboard implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
         postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
-        divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionID"));
+        divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("divisionName"));
 
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
         customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
@@ -297,8 +313,10 @@ public class Dashboard implements Initializable {
         phoneTextField.setVisible(false);
         countryLabel.setVisible(false);
         countryComboBox.setVisible(false);
+        contactComboBox.setVisible(false);
         divisionLabel.setVisible(false);
         divisionComboBox.setVisible(false);
+        userComboBox.setVisible(false);
         dateLabel.setVisible(false);
         dateDatePicker.setVisible(false);
         startLabel.setVisible(false);
@@ -327,12 +345,14 @@ public class Dashboard implements Initializable {
         phoneTextField.setVisible(true);
         countryLabel.setVisible(true);
         countryLabel.setText("Contact");
-        countryComboBox.setVisible(true);
-        countryComboBox.setItems(ContactQuery.contacts());
+        countryComboBox.setVisible(false);
+        contactComboBox.setVisible(true);
+        contactComboBox.setItems(ContactQuery.contacts());
         divisionLabel.setVisible(true);
         divisionLabel.setText("User");
-        divisionComboBox.setVisible(true);
-        divisionComboBox.setItems(UserQuery.users());
+        divisionComboBox.setVisible(false);
+        userComboBox.setVisible(true);
+        userComboBox.setItems(UserQuery.users());
         dateLabel.setVisible(true);
         dateDatePicker.setVisible(true);
         startLabel.setVisible(true);
@@ -359,14 +379,16 @@ public class Dashboard implements Initializable {
         phoneTextField.setVisible(true);
         countryLabel.setVisible(true);
         countryLabel.setText("Country");
+        contactComboBox.setVisible(false);
         countryComboBox.setVisible(true);
         countryComboBox.setItems(CountryQuery.countries());
         divisionLabel.setVisible(true);
         divisionLabel.setText("Division");
+        userComboBox.setVisible(false);
         divisionComboBox.setVisible(true);
         countryComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
             if (newSelection != null) {
-                Country selectedCountry = (Country) countryComboBox.getSelectionModel().getSelectedItem();
+                Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
                 divisionComboBox.setItems(DivisionQuery.divisions(selectedCountry.getCountryID()));
             }
         });
@@ -391,6 +413,8 @@ public class Dashboard implements Initializable {
             dateDatePicker.setValue(null);
             startTextField.clear();
             endTextField.clear();
+            contactComboBox.setValue(null);
+            userComboBox.setValue(null);
         }
     }
 }

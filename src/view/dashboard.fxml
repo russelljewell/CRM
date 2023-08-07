@@ -304,6 +304,11 @@
                                                 <Insets left="10.0" />
                                             </GridPane.margin>
                                         </Label>
+                              <ComboBox fx:id="contactComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets right="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
                                     </children>
                                 </GridPane>
                                 <GridPane GridPane.rowIndex="7">
@@ -325,6 +330,11 @@
                                                 <Insets left="10.0" />
                                             </GridPane.margin>
                                         </Label>
+                              <ComboBox fx:id="userComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets right="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
                                     </children>
                                 </GridPane>
                                 <GridPane GridPane.rowIndex="8">

@@ -27,12 +27,4 @@ public class CountryQuery {
         return allCountries;
     }
 
-    public static int associatedCountry(int divisionID) throws SQLException {
-            String sql = "SELECT Country_ID WHERE Division_ID = ?";
-            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-            ps.setInt(1, divisionID);
-            ResultSet rs = ps.executeQuery();
-            int countryID = rs.getInt("Country_ID");
-            return countryID;
-    }
 }

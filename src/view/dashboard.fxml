@@ -372,7 +372,7 @@
                                                 <Insets left="10.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <TextField fx:id="startTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                        <TextField fx:id="startTextField" maxWidth="1.7976931348623157E308" promptText="HH:MM" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                             <GridPane.margin>
                                                 <Insets right="10.0" />
                                             </GridPane.margin>
@@ -393,7 +393,7 @@
                                                 <Insets left="10.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <TextField fx:id="endTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                        <TextField fx:id="endTextField" maxWidth="1.7976931348623157E308" promptText="HH:MM" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                             <GridPane.margin>
                                                 <Insets right="10.0" />
                                             </GridPane.margin>

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public abstract class AppointmentQuery {
 
     public static int insert(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerID, int userID, int contactID) throws SQLException {
-        String sql = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?)";
+        String sql = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setString(1, title);
         ps.setString(2, description);
@@ -26,7 +26,7 @@ public abstract class AppointmentQuery {
     }
 
     public static int update(int appointmentID, String title, String description, String location, String type, Timestamp start, Timestamp end, int customerID, int userID, int contactID) throws SQLException {
-        String sql = "UPDATE APPOINTMENTS SET Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID = ? WHERE Appointment_ID = ?";
+        String sql = "UPDATE APPOINTMENTS SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setString(1, title);
         ps.setString(2, description);
@@ -50,8 +50,8 @@ public abstract class AppointmentQuery {
         return rowsAffected;
     }
 
-    public static int deleteAll(int customerID) throws SQLException {
-        String sql = "DELETE * FROM APPOINTMENTS WHERE Customer_ID = ?";
+    public static int deleteAssociated(int customerID) throws SQLException {
+        String sql = "DELETE FROM APPOINTMENTS WHERE Customer_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setInt(1, customerID);
         int rowsAffected = ps.executeUpdate();

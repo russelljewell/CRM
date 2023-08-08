@@ -21,6 +21,7 @@ public class Alerts {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.YES) {
+            JDBC.closeConnection();
             System.exit(0);
         }
     }

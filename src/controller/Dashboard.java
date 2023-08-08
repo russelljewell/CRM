@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -67,6 +69,7 @@ public class Dashboard implements Initializable {
     public RadioButton associatedRadio;
     public ComboBox<User> userComboBox;
     public ComboBox<Contact> contactComboBox;
+    int status;
 
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
@@ -77,22 +80,26 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
-        if (customerTable.getSelectionModel().getSelectedItem() == null) {
+        if (status == 0) {
             Alerts.selectCustomer();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
-                AppointmentQuery.deleteAll(selectedCustomer.getCustomerID());
+                AppointmentQuery.deleteAssociated(selectedCustomer.getCustomerID());
+                String customerName = selectedCustomer.getCustomerName();
                 CustomerQuery.delete(selectedCustomer.getCustomerID());
+                customerTable.setItems(CustomerQuery.select());
+                Alert success = new Alert(Alert.AlertType.INFORMATION, customerName + " has been successfully deleted.");
+                success.showAndWait();
                 initializeDetails();
             }
         }
     }
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
-        if (customerTable.getSelectionModel().getSelectedItem() == null) {
+        if (status == 0) {
             Alerts.selectCustomer();
         } else {
             appointmentDetails();
@@ -113,70 +120,101 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionDeleteAppointment(ActionEvent actionEvent) throws SQLException {
-        if (customerTable.getSelectionModel().getSelectedItem() == null) {
+        if (status == 0) {
             Alerts.selectCustomer();
-        } else if (appointmentTable.getSelectionModel().getSelectedItem() == null) {
+        } else if (status != 4) {
             Alerts.selectAppointment();
         } else {
             Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
-            AppointmentQuery.delete(selectedAppointment.getAppointmentID());
-            initializeDetails();
+            int appointmentID = selectedAppointment.getAppointmentID();
+            String type = selectedAppointment.getType();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = confirm.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                AppointmentQuery.delete(selectedAppointment.getAppointmentID());
+                Alert success = new Alert(Alert.AlertType.INFORMATION, "Appointment #" + appointmentID + " " + type + " has been successfully deleted.");
+                success.showAndWait();
+                initializeDetails();
+            }
         }
     }
 
     public void onActionSave(ActionEvent actionEvent) throws SQLException {
-        if (!customerIdLabel.isVisible()) {
+        if (status == 0) {
             Alerts.selectCustomer();
         } else {
-            if (!appointmentIdLabel.isVisible()) {
-                int customerID = Integer.parseInt(customerIdText.getText());
+            if (status == 1 || status == 2) {
                 String customerName = customerNameTextField.getText();
                 String address = addressTextField.getText();
                 String postalCode = postalTextField.getText();
                 String phoneNumber = phoneTextField.getText();
-                int divisionID = Integer.parseInt(String.valueOf(divisionComboBox.getValue()));
-                if (customerIdText.equals("(Auto)")) {
+                int divisionID = divisionComboBox.getValue().getDivisionID();
+                if (status == 1) {
                     CustomerQuery.insert(customerName, address, postalCode, phoneNumber, divisionID);
-                } else {
+                    customerTable.setItems(CustomerQuery.select());
+
+                } else if (status == 2) {
+                    Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+                    int customerID = selectedCustomer.getCustomerID();
                     CustomerQuery.update(customerID, customerName, address, postalCode, phoneNumber, divisionID);
+                    customerTable.setItems(CustomerQuery.select());
                 }
             } else {
-                int appointmentID = Integer.parseInt(appointmentIdText.getText());
                 String title = customerNameTextField.getText();
                 String description = addressTextField.getText();
                 String location = postalTextField.getText();
                 String type = phoneTextField.getText();
-                Timestamp start = Timestamp.valueOf((startTextField.getText()));
-                Timestamp end = Timestamp.valueOf((endTextField.getText()));
-                int customerID = Integer.parseInt(customerIdText.getText());
-                int userID = Integer.parseInt(String.valueOf(userComboBox.getValue()));
-                int contactID = Integer.parseInt(String.valueOf(contactComboBox.getValue()));
-                if (appointmentIdText.equals("(Auto)")) {
+                LocalDate datePicker = dateDatePicker.getValue();
+                LocalTime initStart = LocalTime.parse(startTextField.getText());
+                LocalTime initEnd = LocalTime.parse(endTextField.getText());
+                LocalDateTime formatStart = LocalDateTime.of(datePicker, initStart);
+                LocalDateTime formatEnd = LocalDateTime.of(datePicker, initEnd);
+                Timestamp start = Timestamp.valueOf(formatStart);
+                Timestamp end = Timestamp.valueOf(formatEnd);
+                Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+                int customerID = selectedCustomer.getCustomerID();
+                int userID = userComboBox.getValue().getUserID();
+                int contactID = contactComboBox.getValue().getContactID();
+                if (status == 3) {
                     AppointmentQuery.insert(title, description, location, type, start, end, customerID, userID, contactID);
-                } else {
+                } else if (status == 4) {
+                    Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+                    int appointmentID = selectedAppointment.getAppointmentID();
                     AppointmentQuery.update(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
+                    appointmentTable.setItems(null);
+                    appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
                 }
             }
         }
     }
 
     public void onActionReset(ActionEvent actionEvent) throws SQLException {
-        if (!customerIdLabel.isVisible()) {
+        if (status == 0) {
             Alerts.selectCustomer();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Unsaved changes will be lost, are you sure?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
-                if (detailsLabel.equals("Modify Customer")) {
+                if (status == 2) {
                     Customer selected = customerTable.getSelectionModel().getSelectedItem();
                     customerIdText.setText(String.valueOf(selected.getCustomerID()));
                     customerNameTextField.setText(selected.getCustomerName());
                     addressTextField.setText(selected.getAddress());
                     postalTextField.setText(selected.getPostalCode());
                     phoneTextField.setText(selected.getPhoneNumber());
-                    //countryComboBox.setValue(DivisionQuery.associatedCountry(selected.getDivisionID()));
-                    //divisionComboBox.setValue(selected.getDivisionID());
-                } else if (detailsLabel.equals("Modify Appointment")) {
+                    for (Country country : countryComboBox.getItems()) {
+                        if (country.getCountryID() == selected.getCountryID() ) {
+                            countryComboBox.setValue(country);
+                            break;
+                        }
+                    }
+                    for (Division division : divisionComboBox.getItems()) {
+                        if (division.getDivisionID() == selected.getDivisionID()) {
+                            divisionComboBox.setValue(division);
+                            break;
+                        }
+                    }
+                } else if (status == 4) {
                     Appointment selected = appointmentTable.getSelectionModel().getSelectedItem();
                     appointmentIdText.setText(String.valueOf(selected.getAppointmentID()));
                     customerNameTextField.setText(selected.getTitle());
@@ -184,7 +222,8 @@ public class Dashboard implements Initializable {
                     postalTextField.setText(selected.getLocation());
                     phoneTextField.setText(selected.getType());
 
-
+                } else if (status == 1 || status == 3) {
+                    clear();
                 }
 
             }
@@ -196,9 +235,23 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionMonth(ActionEvent actionEvent) {
+        ObservableList<Appointment> monthly = FXCollections.observableArrayList();
+        for (Appointment appointment : AppointmentQuery.select()) {
+            if (appointment.getStart().isBefore(LocalDateTime.now().plusMonths(1))) {
+                monthly.add(appointment);
+            }
+        }
+        appointmentTable.setItems(monthly);
     }
 
     public void onActionWeek(ActionEvent actionEvent) {
+        ObservableList<Appointment> weekly = FXCollections.observableArrayList();
+        for (Appointment appointment : AppointmentQuery.select()) {
+            if (appointment.getStart().isBefore(LocalDateTime.now().plusWeeks(1))) {
+                weekly.add(appointment);
+            }
+        }
+        appointmentTable.setItems(weekly);
     }
 
     public void onActionAssociated(ActionEvent actionEvent) {
@@ -221,11 +274,13 @@ public class Dashboard implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle){
 
         initializeDetails();
+        status = 0;
 
         customerTable.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
             if (newSelection != null) {
                 appointmentToggle.selectToggle(associatedRadio);
                 customerDetails();
+                status = 2;
                 Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
                 detailsLabel.setText("Modify Customer");
                 customerIdText.setText(String.valueOf(selectedCustomer.getCustomerID()));
@@ -253,6 +308,7 @@ public class Dashboard implements Initializable {
         appointmentTable.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
             if (newSelection != null) {
                 appointmentDetails();
+                status = 4;
                 Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
                 detailsLabel.setText("Modify Appointment");
                 appointmentIdText.setText(String.valueOf(selectedAppointment.getAppointmentID()));
@@ -271,9 +327,9 @@ public class Dashboard implements Initializable {
                         userComboBox.setValue(user);
                     }
                 }
-                //dateDatePicker
-                startTextField.setText(String.valueOf(selectedAppointment.getStart()));
-                endTextField.setText(String.valueOf(selectedAppointment.getEnd()));
+                dateDatePicker.setValue(selectedAppointment.getStart().toLocalDate());
+                startTextField.setText(String.valueOf(selectedAppointment.getStart().toLocalTime()));
+                endTextField.setText(String.valueOf(selectedAppointment.getEnd().toLocalTime()));
             }
         });
 
@@ -298,6 +354,7 @@ public class Dashboard implements Initializable {
     }
 
     public void initializeDetails() {
+        status = 0;
         detailsLabel.setText("Details");
         customerIdLabel.setVisible(false);
         customerIdText.setVisible(false);
@@ -326,6 +383,7 @@ public class Dashboard implements Initializable {
     }
 
     public void appointmentDetails() {
+        status = 3;
         detailsLabel.setText("Create Appointment");
         customerIdLabel.setVisible(true);
         customerIdText.setVisible(true);
@@ -362,6 +420,7 @@ public class Dashboard implements Initializable {
     }
 
     public void customerDetails() {
+        status = 1;
         detailsLabel.setText("Create Customer");
         customerIdLabel.setVisible(true);
         customerIdText.setVisible(true);

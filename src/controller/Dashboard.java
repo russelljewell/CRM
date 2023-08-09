@@ -95,6 +95,7 @@ public class Dashboard implements Initializable {
                 success.showAndWait();
                 initializeDetails();
             }
+            appointmentTable.setItems(null);
         }
     }
 
@@ -181,9 +182,9 @@ public class Dashboard implements Initializable {
                     Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
                     int appointmentID = selectedAppointment.getAppointmentID();
                     AppointmentQuery.update(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
-                    appointmentTable.setItems(null);
-                    appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+
                 }
+                appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
             }
         }
     }

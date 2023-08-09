@@ -407,6 +407,8 @@ public class Dashboard implements Initializable {
         startTextField.setVisible(false);
         endLabel.setVisible(false);
         endTextField.setVisible(false);
+        customerTable.getSelectionModel().clearSelection();
+        appointmentTable.getSelectionModel().clearSelection();
     }
 
     public void appointmentDetails() {

@@ -36,4 +36,9 @@ public class Alerts {
         Alert alert = new Alert(Alert.AlertType.ERROR, "Start time cannot be later than end time.");
         alert.showAndWait();
     }
+
+    public static void login() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid credentials.");
+        alert.showAndWait();
+    }
 }

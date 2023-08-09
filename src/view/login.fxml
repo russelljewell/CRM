@@ -58,7 +58,7 @@
                 <Insets top="10.0" />
             </GridPane.margin>
         </Text>
-      <PasswordField alignment="CENTER" promptText="Password" GridPane.rowIndex="5">
+      <PasswordField fx:id="passwordTextField" alignment="CENTER" promptText="Password" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="50.0" right="50.0" />
          </GridPane.margin>

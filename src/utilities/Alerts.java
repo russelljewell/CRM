@@ -8,7 +8,8 @@ import java.util.Optional;
 public class Alerts {
 
     public static void selectCustomer() {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the table.");
+        Alert alert;
+        alert = new Alert(Alert.AlertType.ERROR, "Please select a customer from the table.");
         alert.showAndWait();
     }
 
@@ -24,5 +25,15 @@ public class Alerts {
             JDBC.closeConnection();
             System.exit(0);
         }
+    }
+
+    public static void invalid() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Text fields cannot be blank.");
+        alert.showAndWait();
+    }
+
+    public static void invalidTime() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Start time cannot be later than end time.");
+        alert.showAndWait();
     }
 }

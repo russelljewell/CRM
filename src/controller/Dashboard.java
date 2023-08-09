@@ -10,6 +10,7 @@ import model.*;
 import utilities.*;
 import utilities.Alerts;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -79,7 +80,7 @@ public class Dashboard implements Initializable {
         appointmentTable.setItems(null);
     }
 
-    public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
+    public void onActionDeleteCustomer(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
         } else {
@@ -100,7 +101,7 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionCreateAppointment(ActionEvent actionEvent) {
-        if (status == 0) {
+        if (status == 0 || customerTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectCustomer();
         } else {
             appointmentDetails();
@@ -120,7 +121,7 @@ public class Dashboard implements Initializable {
         }
     }
 
-    public void onActionDeleteAppointment(ActionEvent actionEvent) throws SQLException {
+    public void onActionDeleteAppointment(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
         } else if (status != 4) {
@@ -140,7 +141,7 @@ public class Dashboard implements Initializable {
         }
     }
 
-    public void onActionSave(ActionEvent actionEvent) throws SQLException {
+    public void onActionSave(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
         } else {
@@ -151,14 +152,25 @@ public class Dashboard implements Initializable {
                 String phoneNumber = phoneTextField.getText();
                 int divisionID = divisionComboBox.getValue().getDivisionID();
                 if (status == 1) {
-                    CustomerQuery.insert(customerName, address, postalCode, phoneNumber, divisionID);
-                    customerTable.setItems(CustomerQuery.select());
-
+                    if (customerName.isBlank() || address.isBlank() || postalCode.isBlank() || phoneNumber.isBlank() || divisionComboBox.getValue() == null) {
+                        Alerts.invalid();
+                        return;
+                    } else {
+                        CustomerQuery.insert(customerName, address, postalCode, phoneNumber, divisionID);
+                        customerTable.setItems(CustomerQuery.select());
+                        initializeDetails();
+                    }
                 } else if (status == 2) {
                     Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
                     int customerID = selectedCustomer.getCustomerID();
-                    CustomerQuery.update(customerID, customerName, address, postalCode, phoneNumber, divisionID);
-                    customerTable.setItems(CustomerQuery.select());
+                    if (customerName.isBlank() || address.isBlank() || postalCode.isBlank() || phoneNumber.isBlank() || divisionComboBox.getValue() == null) {
+                        Alerts.invalid();
+                        return;
+                    } else {
+                        CustomerQuery.update(customerID, customerName, address, postalCode, phoneNumber, divisionID);
+                        customerTable.setItems(CustomerQuery.select());
+                        initializeDetails();
+                    }
                 }
             } else {
                 String title = customerNameTextField.getText();
@@ -177,19 +189,33 @@ public class Dashboard implements Initializable {
                 int userID = userComboBox.getValue().getUserID();
                 int contactID = contactComboBox.getValue().getContactID();
                 if (status == 3) {
-                    AppointmentQuery.insert(title, description, location, type, start, end, customerID, userID, contactID);
+                    if (title.isBlank() || description.isBlank() || location.isBlank() || type.isBlank() || startTextField.getText().isBlank() || endTextField.getText().isBlank() || dateDatePicker.getValue() == null || userComboBox.getValue() == null || contactComboBox.getValue() == null) {
+                        Alerts.invalid();
+                    } else if (initEnd.isBefore(initStart)) {
+                        Alerts.invalidTime();
+                    } else {
+                        AppointmentQuery.insert(title, description, location, type, start, end, customerID, userID, contactID);
+                        appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+                        initializeDetails();
+                    }
                 } else if (status == 4) {
                     Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
                     int appointmentID = selectedAppointment.getAppointmentID();
-                    AppointmentQuery.update(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
-
+                    if (title.isBlank() || description.isBlank() || location.isBlank() || type.isBlank() || startTextField.getText().isBlank() || endTextField.getText().isBlank() || dateDatePicker.getValue() == null || userComboBox.getValue() == null || contactComboBox.getValue() == null) {
+                        Alerts.invalid();
+                    } else if (initEnd.isBefore(initStart)) {
+                        Alerts.invalidTime();
+                    } else {
+                        AppointmentQuery.update(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
+                        appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+                        initializeDetails();
+                    }
                 }
-                appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
             }
         }
     }
 
-    public void onActionReset(ActionEvent actionEvent) throws SQLException {
+    public void onActionReset(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
         } else {

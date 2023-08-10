@@ -3,9 +3,13 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.*;
 import utilities.*;
 import utilities.Alerts;
@@ -70,6 +74,7 @@ public class Dashboard implements Initializable {
     public RadioButton associatedRadio;
     public ComboBox<User> userComboBox;
     public ComboBox<Contact> contactComboBox;
+    Stage stage;
     int status;
 
     public void onActionCreateCustomer(ActionEvent actionEvent) {
@@ -291,6 +296,15 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionGenerateReport(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/reports.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public void onActionExit(ActionEvent actionEvent) {

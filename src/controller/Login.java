@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -15,7 +16,6 @@ import utilities.UserQuery;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -24,21 +24,22 @@ public class Login implements Initializable {
     public TextField usernameTextField;
     public PasswordField passwordTextField;
     Stage stage;
+    boolean pass = false;
 
-    public void onActionLogin(ActionEvent actionEvent) {
+    public void onActionLogin(ActionEvent actionEvent) throws IOException {
         for (User user : UserQuery.users()) {
-            if (usernameTextField.getText().equals(user.getUserID()) && passwordTextField.getText().equals(user.getPassword())) {
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
-                    stage.setTitle("Customer Relationship Manager");
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Alerts.login();
+            if (usernameTextField.getText().equals(user.getUserName()) && passwordTextField.getText().equals(user.getPassword())) {
+                pass = true;
             }
+        }
+        if (pass == true) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/dashboard.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            Alerts.login();
         }
     }
 

@@ -21,6 +21,7 @@ import utilities.ContactQuery;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ResourceBundle;
 
 public class Reports implements Initializable {
@@ -29,7 +30,7 @@ public class Reports implements Initializable {
     public TextField yearTF;
     public BarChart barChart;
     public ComboBox<Appointment> typeComboBox;
-    public ComboBox<Appointment> monthComboBox;
+    public ComboBox<Month> monthComboBox;
     public Text totalText;
     public TableView<Appointment> scheduleTable;
     public TableColumn appointmentIdCol;
@@ -72,15 +73,10 @@ public class Reports implements Initializable {
     }
 
     public void onActionGenerateType(ActionEvent actionEvent) {
-        if (typeComboBox.getValue() != null && monthComboBox.getValue() != null) {
-            for (Appointment type : typeComboBox.getItems()) {
-                if (type.getType() == typeComboBox.getValue().getType()) {
-                    String selectedType = typeComboBox.getValue().getType();
-                }
-            }
-        }
-
-
+        String type = String.valueOf(typeComboBox.getValue());
+        int month = monthComboBox.getSelectionModel().getSelectedIndex() + 1;
+        int total = AppointmentQuery.total(type, month);
+        totalText.setText(String.valueOf(total));
     }
 
     public void onActionReturn(ActionEvent actionEvent) throws IOException {
@@ -98,12 +94,12 @@ public class Reports implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-
+        totalText.setText("");
+        ObservableList months = FXCollections.observableArrayList();
+        months.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        monthComboBox.setItems(months);
         contactsComboBox.setItems(ContactQuery.contacts());
         typeComboBox.setItems(AppointmentQuery.type());
-        monthComboBox.setItems();
 
 
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public abstract class AppointmentQuery {
 
-    public static int insert(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerID, int userID, int contactID){
+    public static int insert(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerID, int userID, int contactID) {
         String sql = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int rowsAffected = 0;
         try {
@@ -189,6 +189,25 @@ public abstract class AppointmentQuery {
         }
         return allTypes;
     }
+
+    public static int total(String type, int month) {
+        String sql = "SELECT COUNT(*) AS total FROM APPOINTMENTS WHERE Type = ? AND MONTH(Start) = ? ";
+        int total = 0;
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setString(1, type);
+            ps.setInt(2, month);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return total;
+    }
 }
+
+
 
 

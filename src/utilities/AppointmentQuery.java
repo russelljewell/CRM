@@ -132,20 +132,21 @@ public abstract class AppointmentQuery {
     }
 
     public static int monthlyTotal(int month, int year) {
-        String sql = "SELECT COUNT(*) AS total FROM APPOINTMENTS WHERE MONTH(?) AND YEAR(?)";
+        String sql = "SELECT COUNT(*) AS total FROM APPOINTMENTS WHERE MONTH(Start) = ? AND YEAR(Start) = ?";
         int total = 0;
         try {
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ps.setInt(1, month);
             ps.setInt(2, year);
             ResultSet rs = ps.executeQuery();
-            total = rs.getInt("total");
+            while (rs.next()) {
+                total = rs.getInt("total");
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return total;
     }
-
 }
 
 

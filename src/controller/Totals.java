@@ -17,36 +17,22 @@ public class Totals {
     public TextField yearTF;
 
     public void onActionSubmit(ActionEvent actionEvent) {
-        int year = 2020;
 
-        int jan = AppointmentQuery.monthlyTotal(1, year);
-        int feb = AppointmentQuery.monthlyTotal(2, year);
-        int mar = AppointmentQuery.monthlyTotal(3, year);
-        int apr = AppointmentQuery.monthlyTotal(4, year);
-        int may = AppointmentQuery.monthlyTotal(5, year);
-        int jun = AppointmentQuery.monthlyTotal(6, year);
-        int jul = AppointmentQuery.monthlyTotal(7, year);
-        int aug = AppointmentQuery.monthlyTotal(8, year);
-        int sep = AppointmentQuery.monthlyTotal(9, year);
-        int oct = AppointmentQuery.monthlyTotal(10, year);
-        int nov = AppointmentQuery.monthlyTotal(11, year);
-        int dec = AppointmentQuery.monthlyTotal(12, year);
-        System.out.println(jan + " " + feb + " " + mar);
-
+        barChart.getData().clear();
         XYChart.Series data = new XYChart.Series();
-        data.getData().add(new XYChart.Data("January", jan));
-        data.getData().add(new XYChart.Data("February", feb));
-        data.getData().add(new XYChart.Data("March", mar));
-        data.getData().add(new XYChart.Data("April", apr));
-        data.getData().add(new XYChart.Data("May", may));
-        data.getData().add(new XYChart.Data("June", jun));
-        data.getData().add(new XYChart.Data("July", jul));
-        data.getData().add(new XYChart.Data("August", aug));
-        data.getData().add(new XYChart.Data("September", sep));
-        data.getData().add(new XYChart.Data("October", oct));
-        data.getData().add(new XYChart.Data("November", nov));
-        data.getData().add(new XYChart.Data("December", dec));
-        barChart.getData().add(data);
+        data.getData().add(new XYChart.Data("January", AppointmentQuery.monthlyTotal(1, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("February", AppointmentQuery.monthlyTotal(2, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("March", AppointmentQuery.monthlyTotal(3, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("April", AppointmentQuery.monthlyTotal(4, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("May", AppointmentQuery.monthlyTotal(5, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("June", AppointmentQuery.monthlyTotal(6, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("July", AppointmentQuery.monthlyTotal(7, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("August", AppointmentQuery.monthlyTotal(8, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("September", AppointmentQuery.monthlyTotal(9, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("October", AppointmentQuery.monthlyTotal(10, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("November", AppointmentQuery.monthlyTotal(11, Integer.parseInt(yearTF.getText()))));
+        data.getData().add(new XYChart.Data("December", AppointmentQuery.monthlyTotal(12, Integer.parseInt(yearTF.getText()))));
+        barChart.getData().addAll(data);
     }
 
     public void onActionCancel(ActionEvent actionEvent) throws IOException {

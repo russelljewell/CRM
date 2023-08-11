@@ -37,6 +37,7 @@ public class Login implements Initializable {
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         } else {
             Alerts.login();

@@ -11,11 +11,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
         primaryStage.setTitle("Customer Relationship Manager");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        primaryStage.centerOnScreen();
     }
 
     public static void main(String[] args) {

@@ -147,6 +147,48 @@ public abstract class AppointmentQuery {
         }
         return total;
     }
+
+    public static ObservableList<Appointment> report(int contactID) {
+        ObservableList<Appointment> allAssociated = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM APPOINTMENTS WHERE Contact_ID = ?";
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setInt(1, contactID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int appointmentID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
+                int customerID = rs.getInt("Customer_ID");
+                int userID = rs.getInt("User_ID");
+                Appointment appointment = new Appointment(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
+                allAssociated.add(appointment);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return allAssociated;
+    }
+
+    public static ObservableList<Appointment> type() {
+        ObservableList allTypes = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM APPOINTMENTS";
+        try {
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String type = rs.getString("Type");
+                allTypes.add(type);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return allTypes;
+    }
 }
 
 

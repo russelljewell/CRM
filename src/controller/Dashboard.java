@@ -302,6 +302,7 @@ public class Dashboard implements Initializable {
             Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException throwables) {
             throwables.printStackTrace();
         }

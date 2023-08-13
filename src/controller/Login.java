@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -26,6 +29,8 @@ public class Login implements Initializable {
     public Text locationText;
     public TextField usernameTextField;
     public PasswordField passwordTextField;
+    public Button loginButton;
+    public Button exitButton;
     boolean pass = false;
 
 
@@ -59,6 +64,15 @@ public class Login implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //locationText.setText();
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            ResourceBundle rb = ResourceBundle.getBundle("resourceBundle", Locale.getDefault());
+            usernameTextField.setPromptText(rb.getString("Username"));
+            passwordTextField.setPromptText(rb.getString("Password"));
+            loginButton.setText(rb.getString("Login"));
+            exitButton.setText(rb.getString("Exit"));
+        }
+
+        locationText.setText(ZoneId.systemDefault().getId());
+
     }
 }

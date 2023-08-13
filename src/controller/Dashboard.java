@@ -86,7 +86,7 @@ public class Dashboard implements Initializable {
     }
 
     public void onActionDeleteCustomer(ActionEvent actionEvent) {
-        if (status == 0) {
+        if (status == 0 || customerTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectCustomer();
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);

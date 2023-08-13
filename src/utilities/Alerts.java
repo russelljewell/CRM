@@ -3,7 +3,9 @@ package utilities;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class Alerts {
 
@@ -19,11 +21,21 @@ public class Alerts {
     }
 
     public static void exit() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            JDBC.closeConnection();
-            System.exit(0);
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundle", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, rb.getString("Prompt"), ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                JDBC.closeConnection();
+                System.exit(0);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                JDBC.closeConnection();
+                System.exit(0);
+            }
         }
     }
 
@@ -38,7 +50,13 @@ public class Alerts {
     }
 
     public static void login() {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid credentials.");
-        alert.showAndWait();
+        ResourceBundle rb = ResourceBundle.getBundle("resourceBundle", Locale.getDefault());
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("Invalid"));
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid credentials.");
+            alert.showAndWait();
+        }
     }
 }

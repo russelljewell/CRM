@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.*;
 import utilities.*;
@@ -18,11 +20,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class Dashboard implements Initializable {
 
@@ -74,6 +75,8 @@ public class Dashboard implements Initializable {
     public RadioButton associatedRadio;
     public ComboBox<User> userComboBox;
     public ComboBox<Contact> contactComboBox;
+    public Text hoursText;
+    public Label hoursLabel;
     Stage stage;
     int status;
 
@@ -182,13 +185,14 @@ public class Dashboard implements Initializable {
                 String description = addressTextField.getText();
                 String location = postalTextField.getText();
                 String type = phoneTextField.getText();
+
                 LocalDate datePicker = dateDatePicker.getValue();
                 LocalTime initStart = LocalTime.parse(startTextField.getText());
                 LocalTime initEnd = LocalTime.parse(endTextField.getText());
                 LocalDateTime formatStart = LocalDateTime.of(datePicker, initStart);
                 LocalDateTime formatEnd = LocalDateTime.of(datePicker, initEnd);
-                Timestamp start = Timestamp.valueOf(formatStart);
-                Timestamp end = Timestamp.valueOf(formatEnd);
+                Timestamp start = Timestamp.from(Timestamp.valueOf(formatStart).toInstant());
+                Timestamp end = Timestamp.from(Timestamp.valueOf(formatEnd).toInstant());
                 Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
                 int customerID = selectedCustomer.getCustomerID();
                 int userID = userComboBox.getValue().getUserID();
@@ -369,9 +373,9 @@ public class Dashboard implements Initializable {
                         userComboBox.setValue(user);
                     }
                 }
-                dateDatePicker.setValue(selectedAppointment.getStart().toLocalDate());
-                startTextField.setText(String.valueOf(selectedAppointment.getStart().toLocalTime()));
-                endTextField.setText(String.valueOf(selectedAppointment.getEnd().toLocalTime()));
+                dateDatePicker.setValue(selectedAppointment.getStart().atZone(TimeZone.getDefault().toZoneId()).toLocalDate());
+                startTextField.setText(String.valueOf(selectedAppointment.getStart().atZone(TimeZone.getDefault().toZoneId()).toLocalTime()));
+                endTextField.setText(String.valueOf(selectedAppointment.getEnd().atZone(TimeZone.getDefault().toZoneId()).toLocalTime()));
             }
         });
 
@@ -422,6 +426,8 @@ public class Dashboard implements Initializable {
         startTextField.setVisible(false);
         endLabel.setVisible(false);
         endTextField.setVisible(false);
+        hoursLabel.setVisible(false);
+        hoursText.setVisible(false);
         customerTable.getSelectionModel().clearSelection();
         appointmentTable.getSelectionModel().clearSelection();
     }
@@ -461,6 +467,8 @@ public class Dashboard implements Initializable {
         startTextField.setVisible(true);
         endLabel.setVisible(true);
         endTextField.setVisible(true);
+        hoursLabel.setVisible(true);
+        hoursText.setVisible(true);
     }
 
     public void customerDetails() {
@@ -519,5 +527,9 @@ public class Dashboard implements Initializable {
             contactComboBox.setValue(null);
             userComboBox.setValue(null);
         }
+    }
+
+    public void timeConversion() {
+
     }
 }

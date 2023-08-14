@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -35,7 +36,7 @@ public class Login implements Initializable {
 
 
     public void onActionLogin(ActionEvent actionEvent) throws IOException {
-        FileWriter fw = new FileWriter("src/login_activity.txt", true);
+        FileWriter fw = new FileWriter("login_activity.txt", true);
         PrintWriter pw = new PrintWriter(fw);
         for (User user : UserQuery.users()) {
             if (usernameTextField.getText().equals(user.getUserName()) && passwordTextField.getText().equals(user.getPassword())) {
@@ -43,7 +44,7 @@ public class Login implements Initializable {
             }
         }
         if (pass == true) {
-            pw.println("Successful Log-In: " + usernameTextField.getText() + " (" + LocalDateTime.now() + " UTC)");
+            pw.println("Successful Log-In: " + usernameTextField.getText() + " (" + LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC")) + " UTC)");
             pw.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/dashboard.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -52,7 +53,7 @@ public class Login implements Initializable {
             stage.centerOnScreen();
             stage.show();
         } else {
-            pw.println("Failed Log-In: " + usernameTextField.getText() + " (" + LocalDateTime.now() + " UTC)");
+            pw.println("Failed Log-In: " + usernameTextField.getText() + " (" + LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC")) + " UTC)");
             pw.close();
             Alerts.login();
         }

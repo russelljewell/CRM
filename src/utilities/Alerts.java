@@ -1,13 +1,9 @@
 package utilities;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import model.Appointment;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Optional;
@@ -65,4 +61,25 @@ public class Alerts {
             alert.showAndWait();
         }
     }
+
+    public static void businessHours() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Appointments must be scheduled within business hours.");
+        alert.showAndWait();
+    }
+
+    public static void upcoming(int id, LocalDate date, LocalTime time) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Upcoming Appointment \n\n" + "Customer ID: " + id + "\nDate: " + date + "\nTime: " + time);
+        alert.showAndWait();
+    }
+
+    public static void noUpcoming() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have no upcoming appointments.");
+        alert.showAndWait();
+    }
+
+    public static void overlap() {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "This customer has an existing appointment which overlaps with the times provided.");
+            alert.showAndWait();
+    }
 }
+

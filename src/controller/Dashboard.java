@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.chrono.ChronoZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -83,6 +84,15 @@ public class Dashboard implements Initializable {
     public Text hoursText;
     public Label hoursLabel;
     int status;
+    LocalDate date = LocalDate.now();
+    LocalTime open = LocalTime.of(8,00);
+    LocalTime close = LocalTime.of(22,00);
+    ZoneId local = ZoneId.of(TimeZone.getDefault().getID());
+    ZoneId EST = ZoneId.of("America/New_York");
+    ZonedDateTime businessOpen = ZonedDateTime.of(date, open, EST);
+    ZonedDateTime businessClose = ZonedDateTime.of(date, close, EST);
+    ZonedDateTime localOpen = businessOpen.withZoneSameInstant(local);
+    ZonedDateTime localClose = businessClose.withZoneSameInstant(local);
 
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
@@ -205,6 +215,10 @@ public class Dashboard implements Initializable {
                         Alerts.invalid();
                     } else if (initEnd.isBefore(initStart)) {
                         Alerts.invalidTime();
+                    } else if (initStart.isBefore(LocalTime.from(localOpen)) || initEnd.isAfter(LocalTime.from(localClose))) {
+                        Alerts.businessHours();
+                    } else if (conflictCheckerAdd(formatStart, formatEnd, customerID)) {
+                       Alerts.overlap();
                     } else {
                         AppointmentQuery.insert(title, description, location, type, start, end, customerID, userID, contactID);
                         appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
@@ -217,6 +231,10 @@ public class Dashboard implements Initializable {
                         Alerts.invalid();
                     } else if (initEnd.isBefore(initStart)) {
                         Alerts.invalidTime();
+                    } else if (initStart.isBefore(LocalTime.from(localOpen)) || initEnd.isAfter(LocalTime.from(localClose))) {
+                        Alerts.businessHours();
+                    } else if (conflictCheckerUpdate(formatStart, formatEnd, customerID, appointmentID)) {
+                        Alerts.overlap();
                     } else {
                         AppointmentQuery.update(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
                         appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
@@ -321,6 +339,17 @@ public class Dashboard implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
+        boolean upcoming = false;
+        for (Appointment appointment : AppointmentQuery.select()) {
+            if (appointment.getStart().isAfter(LocalDateTime.now()) && appointment.getStart().isBefore(LocalDateTime.now().plusMinutes(15))) {
+                Alerts.upcoming(appointment.getCustomerID(), appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime());
+                upcoming = true;
+                break;
+            }
+        }
+        if (!upcoming) {
+            Alerts.noUpcoming();
+        }
 
         initializeDetails();
         status = 0;
@@ -472,15 +501,6 @@ public class Dashboard implements Initializable {
         endTextField.setVisible(true);
         hoursLabel.setVisible(true);
         hoursText.setVisible(true);
-        LocalDate date = LocalDate.now();
-        LocalTime open = LocalTime.of(8,00);
-        LocalTime close = LocalTime.of(22,00);
-        ZoneId local = ZoneId.of(TimeZone.getDefault().getID());
-        ZoneId EST = ZoneId.of("America/New_York");
-        ZonedDateTime businessOpen = ZonedDateTime.of(date, open, EST);
-        ZonedDateTime businessClose = ZonedDateTime.of(date, close, EST);
-        ZonedDateTime localOpen = businessOpen.withZoneSameInstant(local);
-        ZonedDateTime localClose = businessClose.withZoneSameInstant(local);
         hoursText.setText(localOpen.format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + localClose.format(DateTimeFormatter.ofPattern("HH:mm")) );
     }
 
@@ -540,5 +560,39 @@ public class Dashboard implements Initializable {
             contactComboBox.setValue(null);
             userComboBox.setValue(null);
         }
+    }
+
+    public boolean conflictCheckerAdd(LocalDateTime start, LocalDateTime end, int customerID) {
+        boolean conflict = false;
+        for (Appointment appointment : AppointmentQuery.selectAssociated(customerID)) {
+            LocalDateTime apptStart = appointment.getStart();
+            LocalDateTime apptEnd = appointment.getEnd();
+                if ((start.isAfter(apptStart) || start.isEqual(apptStart)) && start.isBefore(apptEnd)) {
+                    conflict = true;
+                } else if ((end.isAfter(apptStart)) && (end.isBefore(apptEnd) || end.isEqual(apptEnd))) {
+                    conflict = true;
+                } else if ((start.isBefore(apptStart) || start.isEqual(apptStart)) && (end.isAfter(apptEnd) || end.isEqual(apptEnd))) {
+                    conflict = true;
+                }
+        }
+        return conflict;
+    }
+
+    public boolean conflictCheckerUpdate (LocalDateTime start, LocalDateTime end, int customerID, int appointmentID) {
+        boolean conflict = false;
+        for (Appointment appointment : AppointmentQuery.selectAssociated(customerID)) {
+            LocalDateTime apptStart = appointment.getStart();
+            LocalDateTime apptEnd = appointment.getEnd();
+            if (appointment.getAppointmentID() != appointmentID) {
+                if ((start.isAfter(apptStart) || start.isEqual(apptStart)) && start.isBefore(apptEnd)) {
+                    conflict = true;
+                } else if ((end.isAfter(apptStart)) && (end.isBefore(apptEnd) || end.isEqual(apptEnd))) {
+                    conflict = true;
+                } else if ((start.isBefore(apptStart) || start.isEqual(apptStart)) && (end.isAfter(apptEnd) || end.isEqual(apptEnd))) {
+                    conflict = true;
+                }
+            }
+        }
+        return conflict;
     }
 }

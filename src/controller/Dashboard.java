@@ -12,6 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateTimeStringConverter;
+import javafx.util.converter.LocalTimeStringConverter;
 import model.*;
 import utilities.*;
 import utilities.Alerts;
@@ -20,9 +22,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 public class Dashboard implements Initializable {
@@ -77,7 +82,6 @@ public class Dashboard implements Initializable {
     public ComboBox<Contact> contactComboBox;
     public Text hoursText;
     public Label hoursLabel;
-    Stage stage;
     int status;
 
     public void onActionCreateCustomer(ActionEvent actionEvent) {
@@ -185,7 +189,6 @@ public class Dashboard implements Initializable {
                 String description = addressTextField.getText();
                 String location = postalTextField.getText();
                 String type = phoneTextField.getText();
-
                 LocalDate datePicker = dateDatePicker.getValue();
                 LocalTime initStart = LocalTime.parse(startTextField.getText());
                 LocalTime initEnd = LocalTime.parse(endTextField.getText());
@@ -469,6 +472,16 @@ public class Dashboard implements Initializable {
         endTextField.setVisible(true);
         hoursLabel.setVisible(true);
         hoursText.setVisible(true);
+        LocalDate date = LocalDate.now();
+        LocalTime open = LocalTime.of(8,00);
+        LocalTime close = LocalTime.of(22,00);
+        ZoneId local = ZoneId.of(TimeZone.getDefault().getID());
+        ZoneId EST = ZoneId.of("America/New_York");
+        ZonedDateTime businessOpen = ZonedDateTime.of(date, open, EST);
+        ZonedDateTime businessClose = ZonedDateTime.of(date, close, EST);
+        ZonedDateTime localOpen = businessOpen.withZoneSameInstant(local);
+        ZonedDateTime localClose = businessClose.withZoneSameInstant(local);
+        hoursText.setText(localOpen.format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + localClose.format(DateTimeFormatter.ofPattern("HH:mm")) );
     }
 
     public void customerDetails() {
@@ -527,9 +540,5 @@ public class Dashboard implements Initializable {
             contactComboBox.setValue(null);
             userComboBox.setValue(null);
         }
-    }
-
-    public void timeConversion() {
-
     }
 }

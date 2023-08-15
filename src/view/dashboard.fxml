@@ -121,6 +121,7 @@
                                         <TableColumn fx:id="addressCol" minWidth="0.0" prefWidth="219.0" text="Address" />
                                         <TableColumn fx:id="postalCol" prefWidth="76.0" text="Postal" />
                                         <TableColumn fx:id="phoneCol" prefWidth="151.0" text="Phone" />
+                                        <TableColumn fx:id="countryCol" prefWidth="153.0" text="Country" />
                                         <TableColumn fx:id="divisionCol" prefWidth="153.0" text="Division" />
                                     </columns>
                                     <GridPane.margin>

@@ -83,6 +83,7 @@ public class Dashboard implements Initializable {
     public ComboBox<Contact> contactComboBox;
     public Text hoursText;
     public Label hoursLabel;
+    public TableColumn countryCol;
     int status;
     LocalDate date = LocalDate.now();
     LocalTime open = LocalTime.of(8,00);
@@ -158,6 +159,11 @@ public class Dashboard implements Initializable {
                 AppointmentQuery.delete(selectedAppointment.getAppointmentID());
                 Alert success = new Alert(Alert.AlertType.INFORMATION, "Appointment #" + appointmentID + " " + type + " has been successfully deleted.");
                 success.showAndWait();
+                if (customerTable.getSelectionModel().getSelectedItem() == null) {
+                    appointmentTable.setItems(null);
+                } else {
+                    appointmentTable.setItems(AppointmentQuery.selectAssociated(customerTable.getSelectionModel().getSelectedItem().getCustomerID()));
+                }
                 initializeDetails();
             }
         }
@@ -221,7 +227,11 @@ public class Dashboard implements Initializable {
                        Alerts.overlap();
                     } else {
                         AppointmentQuery.insert(title, description, location, type, start, end, customerID, userID, contactID);
-                        appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+                        if (customerTable.getSelectionModel().getSelectedItem() == null) {
+                            appointmentTable.setItems(null);
+                        } else {
+                            appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+                        }
                         initializeDetails();
                     }
                 } else if (status == 4) {
@@ -237,7 +247,11 @@ public class Dashboard implements Initializable {
                         Alerts.overlap();
                     } else {
                         AppointmentQuery.update(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
-                        appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+                        if (customerTable.getSelectionModel().getSelectedItem() == null) {
+                            appointmentTable.setItems(null);
+                        } else {
+                            appointmentTable.setItems(AppointmentQuery.selectAssociated(customerID));
+                        }
                         initializeDetails();
                     }
                 }
@@ -417,7 +431,9 @@ public class Dashboard implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
         postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("countryName"));
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("divisionName"));
+
 
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
         customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));

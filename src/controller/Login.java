@@ -23,6 +23,7 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** This class defines the functionality of the login screen. */
 public class Login implements Initializable {
 
     public Text locationText;
@@ -32,7 +33,9 @@ public class Login implements Initializable {
     public Button exitButton;
     boolean pass = false;
 
-
+    /** This method validates login credentials and displays the dashboard. This method records user login attempts.
+     * @param actionEvent The login button is pressed.
+     * */
     public void onActionLogin(ActionEvent actionEvent) throws IOException {
         FileWriter fw = new FileWriter("login_activity.txt", true);
         PrintWriter pw = new PrintWriter(fw);
@@ -57,10 +60,17 @@ public class Login implements Initializable {
         }
     }
 
+    /** This method terminates the application.
+     * @param actionEvent The exit button is pressed.
+     * */
     public void onActionExit(ActionEvent actionEvent) {
         Alerts.exit();
     }
 
+    /** This method initializes the login screen.
+     * @param url Location of root-object.
+     * @param resourceBundle  Root-object localization resources.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (Locale.getDefault().getLanguage().equals("fr")) {
@@ -70,8 +80,6 @@ public class Login implements Initializable {
             loginButton.setText(rb.getString("Login"));
             exitButton.setText(rb.getString("Exit"));
         }
-
         locationText.setText(ZoneId.systemDefault().getId());
-
     }
 }

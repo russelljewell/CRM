@@ -11,18 +11,30 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * @return The user ID.
+     * */
     public int getUserID() {
         return userID;
     }
 
+    /**
+     * @return The user name.
+     * */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * @return The password.
+     * */
     public String getPassword() {
         return password;
     }
 
+    /** Displays user name in place of user ID.
+     * @return The user name.
+     * */
     @Override
     public String toString() { return userName; }
 }

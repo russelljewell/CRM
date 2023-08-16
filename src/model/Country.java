@@ -9,10 +9,16 @@ public class Country {
         this.countryName = countryName;
     }
 
+    /**
+     * @return The country ID.
+     * */
     public int getCountryID() {
         return countryID;
     }
 
+    /** Displays country name in place of country ID.
+     * @return The country name.
+     * */
     @Override
     public String toString() {
         return countryName;

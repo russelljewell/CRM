@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+/** This class defines the functionality of the dashboard screen. */
 public class Dashboard implements Initializable {
 
     public Label detailsLabel;
@@ -76,6 +77,7 @@ public class Dashboard implements Initializable {
     public Label hoursLabel;
     public TableColumn countryCol;
     int status;
+
     LocalDate date = LocalDate.now();
     LocalTime open = LocalTime.of(8,00);
     LocalTime close = LocalTime.of(22,00);
@@ -86,6 +88,9 @@ public class Dashboard implements Initializable {
     ZonedDateTime localOpen = businessOpen.withZoneSameInstant(local);
     ZonedDateTime localClose = businessClose.withZoneSameInstant(local);
 
+    /** This method prepares the details panel to accept user input to add a customer.
+     * @param actionEvent The customer-table create button is pressed.
+     * */
     public void onActionCreateCustomer(ActionEvent actionEvent) {
         customerDetails();
         customerIdText.setText("(Auto)");
@@ -94,6 +99,9 @@ public class Dashboard implements Initializable {
         appointmentTable.setItems(null);
     }
 
+    /** This method deletes a selected customer.
+     * @param actionEvent The customer-table delete button is pressed.
+     * */
     public void onActionDeleteCustomer(ActionEvent actionEvent) {
         if (status == 0 || customerTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectCustomer();
@@ -114,6 +122,9 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method prepares the details panel to accept user input to add an appointment.
+     * @param actionEvent The appointment-table create button is pressed.
+     * */
     public void onActionCreateAppointment(ActionEvent actionEvent) {
         if (status == 0 || customerTable.getSelectionModel().getSelectedItem() == null) {
             Alerts.selectCustomer();
@@ -135,6 +146,9 @@ public class Dashboard implements Initializable {
         }
     }
 
+     /** This method deletes a selected appointment.
+     * @param actionEvent The appointment-table delete button is pressed.
+     * */
     public void onActionDeleteAppointment(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
@@ -160,6 +174,9 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method saves the values of all fields in the details panel. This method checks a "state" condition to determine which query method to call.
+     * @param actionEvent The save button is pressed.
+     * */
     public void onActionSave(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
@@ -250,6 +267,9 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method resets the values of all fields in the details panel. This method checks a "state" condition to determine how to re-initialize the values.
+     * @param actionEvent The reset button is pressed.
+     * */
     public void onActionReset(ActionEvent actionEvent) {
         if (status == 0) {
             Alerts.selectCustomer();
@@ -292,10 +312,16 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method displays all appointments in the appointments table.
+     * @param actionEvent The "All" radio button is pressed.
+     * */
     public void onActionAll(ActionEvent actionEvent) {
         appointmentTable.setItems(AppointmentQuery.select());
     }
 
+    /** This method displays all appointments within the next month in the appointments able.
+     * @param actionEvent The "Monthly" radio button is pressed.
+     * */
     public void onActionMonth(ActionEvent actionEvent) {
         ObservableList<Appointment> monthly = FXCollections.observableArrayList();
         for (Appointment appointment : AppointmentQuery.select()) {
@@ -306,6 +332,9 @@ public class Dashboard implements Initializable {
         appointmentTable.setItems(monthly);
     }
 
+    /** This method displays all appointments within the next week in the appointments able.
+     * @param actionEvent The "Weekly" radio button is pressed.
+     * */
     public void onActionWeek(ActionEvent actionEvent) {
         ObservableList<Appointment> weekly = FXCollections.observableArrayList();
         for (Appointment appointment : AppointmentQuery.select()) {
@@ -316,6 +345,9 @@ public class Dashboard implements Initializable {
         appointmentTable.setItems(weekly);
     }
 
+    /** This method displays all appointments associated with the selected customer in the appointments table.
+     * @param actionEvent The "Associated" radio button is pressed.
+     * */
     public void onActionAssociated(ActionEvent actionEvent) {
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
         if (customerTable.getSelectionModel().getSelectedItem() != null) {
@@ -325,6 +357,9 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method displays the reports screen.
+     * @Param The generate reports button is pressed.
+     * */
     public void onActionGenerateReport(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/reports.fxml"));
@@ -338,10 +373,17 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method terminates the application.
+     * @param actionEvent The exit button is pressed.
+     * */
     public void onActionExit(ActionEvent actionEvent) {
         Alerts.exit();
     }
 
+    /** This method initializes the dashboard screen.
+     * @param url Location of root-object.
+     * @param resourceBundle  Root-object localization resources.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         boolean upcoming = false;
@@ -359,6 +401,9 @@ public class Dashboard implements Initializable {
         initializeDetails();
         status = 0;
 
+        /** This lambda expression automatically populates the text fields of the details panel when a customer is selected from the customer table.
+         * This allows the user to immediately view and edit customer details without having to press an extra button to display them.
+         * */
         customerTable.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
             if (newSelection != null) {
                 appointmentToggle.selectToggle(associatedRadio);
@@ -388,6 +433,9 @@ public class Dashboard implements Initializable {
             }
         });
 
+        /** This lambda expression automatically populates the text fields of the details panel when an appointment is selected from the appointment table.
+         * This allows the user to immediately view and edit appointment details without having to press an extra button to display them.
+         * */
         appointmentTable.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
             if (newSelection != null) {
                 appointmentDetails();
@@ -416,6 +464,7 @@ public class Dashboard implements Initializable {
             }
         });
 
+        /** Initialize customer table columns. */
         customerTable.setItems(CustomerQuery.select());
         idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerID"));
         nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
@@ -426,6 +475,7 @@ public class Dashboard implements Initializable {
         divisionCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("divisionName"));
 
 
+        /** Initialize appointment table columns. */
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
         customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
         userIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userID"));
@@ -438,6 +488,7 @@ public class Dashboard implements Initializable {
         endCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
     }
 
+    /** This method hides all labels and fields in the details panel until a customer or appointment is selected. */
     public void initializeDetails() {
         status = 0;
         detailsLabel.setText("Details");
@@ -471,6 +522,7 @@ public class Dashboard implements Initializable {
         appointmentTable.getSelectionModel().clearSelection();
     }
 
+    /** This method displays only the fields and labels necessary within the details panel to view and edit appointment information. */
     public void appointmentDetails() {
         status = 3;
         detailsLabel.setText("Create Appointment");
@@ -511,6 +563,7 @@ public class Dashboard implements Initializable {
         hoursText.setText(localOpen.format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + localClose.format(DateTimeFormatter.ofPattern("HH:mm")) );
     }
 
+    /** This method displays only the fields and labels necessary within the details panel to view and edit customer information. */
     public void customerDetails() {
         status = 1;
         detailsLabel.setText("Create Customer");
@@ -537,6 +590,7 @@ public class Dashboard implements Initializable {
         divisionLabel.setText("Division");
         userComboBox.setVisible(false);
         divisionComboBox.setVisible(true);
+        /** This lambda expression automatically loads the relevant divisions into a combo box based on the selection of the country combo-box. */
         countryComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, priorSelection, newSelection) -> {
             if (newSelection != null) {
                 Country selectedCountry = countryComboBox.getSelectionModel().getSelectedItem();
@@ -553,6 +607,7 @@ public class Dashboard implements Initializable {
         endTextField.setVisible(false);
     }
 
+    /** This method clears all fields in the details panel. */
     public void clear() {
         customerNameTextField.clear();
         addressTextField.clear();
@@ -569,6 +624,12 @@ public class Dashboard implements Initializable {
         }
     }
 
+    /** This method checks whether a user-created appointment will conflict with existing appointments.
+     * @param start The start date and time input by the user.
+     * @param end The end and date time input by the user.
+     * @param customerID The customer ID selected by the user.
+     * @return conflict A boolean condition indicating the presence of a schedule conflict.
+     * */
     public boolean conflictCheckerAdd(LocalDateTime start, LocalDateTime end, int customerID) {
         boolean conflict = false;
         for (Appointment appointment : AppointmentQuery.selectAssociated(customerID)) {
@@ -585,6 +646,14 @@ public class Dashboard implements Initializable {
         return conflict;
     }
 
+    /** This method checks whether a user-modified appointment will conflict with existing appointments.
+     * This method excludes the existing appointment of the same appointment ID.
+     * @param start The start date and time (un)modified by the user.
+     * @param end The end and date time (un)modified by the user.
+     * @param customerID The customer ID selected by the user.
+     * @param appointmentID The appointment ID of the (un)modified appointment.
+     * @return conflict A boolean condition indicating the presence of a schedule conflict.
+     * */
     public boolean conflictCheckerUpdate (LocalDateTime start, LocalDateTime end, int customerID, int appointmentID) {
         boolean conflict = false;
         for (Appointment appointment : AppointmentQuery.selectAssociated(customerID)) {

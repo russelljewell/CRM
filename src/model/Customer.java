@@ -23,36 +23,63 @@ public class Customer {
         this.countryName = countryName;
     }
 
+    /**
+     * @return The customer ID.
+     * */
     public int getCustomerID() {
         return customerID;
     }
 
+    /**
+     * @return The customer name.
+     * */
     public String getCustomerName() {
         return customerName;
     }
 
+    /**
+     * @return The address.
+     * */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * @return The postal code.
+     * */
     public String getPostalCode() {
         return postalCode;
     }
 
+    /**
+     * @return The phone number.
+     * */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * @return The division ID.
+     * */
     public int getDivisionID() {
         return divisionID;
     }
 
+    /**
+     * @return The country ID.
+     * */
     public int getCountryID() {
         return countryID;
     }
 
+    /**
+     * @return The division name.
+     * */
     public String getDivisionName() { return divisionName; }
 
+    /**
+     * @return The country name.
+     * */
     public String getCountryName() {
         return countryName;
     }

@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ResourceBundle;
 
+/** This class defines the functionality of the reports screen. */
 public class Reports implements Initializable {
 
     public ComboBox<Contact> contactsComboBox;
@@ -41,6 +42,9 @@ public class Reports implements Initializable {
     public TableColumn startCol;
     public TableColumn endCol;
 
+    /** This method displays contact-specific appointments in a table view. The user selects a contact from a combo-box which populates the table view with their associated appointments.
+     * @param actionEvent The selection of a contact in a combo-box.
+     * */
     public void onActionGenerateSchedule(ActionEvent actionEvent) {
         if (contactsComboBox.getValue() != null) {
             for (Contact contact: contactsComboBox.getItems()) {
@@ -51,10 +55,14 @@ public class Reports implements Initializable {
         }
     }
 
+    /** This method displays the total appointments for each month in a bar chart. The user inputs a year into a text-field. which populates the chart with the totals for each month in that year.
+     * @param actionEvent Pressing the submit button after entering a year into the text-field.
+     * */
     public void onActionGenerateTotals(ActionEvent actionEvent) {
         if (yearTF.getText().isBlank()) {
             Alerts.invalid();
         } else {
+            /** Initialize bar char and populate x and y axes. */
             XYChart.Series data = new XYChart.Series();
             data.getData().add(new XYChart.Data("January", AppointmentQuery.monthlyTotal(1, Integer.parseInt(yearTF.getText()))));
             data.getData().add(new XYChart.Data("February", AppointmentQuery.monthlyTotal(2, Integer.parseInt(yearTF.getText()))));
@@ -72,6 +80,9 @@ public class Reports implements Initializable {
         }
     }
 
+    /** This method displays the total of appointments for a given month and type.
+     * @param actionEvent Pressing the submit button after a selection is made in the type and month combo-boxes.
+     * */
     public void onActionGenerateType(ActionEvent actionEvent) {
         String type = String.valueOf(typeComboBox.getValue());
         int month = monthComboBox.getSelectionModel().getSelectedIndex() + 1;
@@ -79,6 +90,9 @@ public class Reports implements Initializable {
         totalText.setText(String.valueOf(total));
     }
 
+    /** This method loads the dashboard screen.
+     * @param actionEvent The return button is pressed.
+     * */
     public void onActionReturn(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -88,10 +102,17 @@ public class Reports implements Initializable {
         stage.centerOnScreen();
     }
 
+    /** This method terminates the application.
+     * @param actionEvent The exit button is pressed.
+     * */
     public void onActionExit(ActionEvent actionEvent) {
         Alerts.exit();
     }
 
+    /** This method initializes the reports screen. This method defines the contents of table columns and combo-boxes.
+     * @param url Location of root-object.
+     * @param resourceBundle  Root-object localization resources.
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         totalText.setText("");
@@ -101,7 +122,7 @@ public class Reports implements Initializable {
         contactsComboBox.setItems(ContactQuery.contacts());
         typeComboBox.setItems(AppointmentQuery.type());
 
-
+        /** Initialize schedule table columns. */
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
         customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));

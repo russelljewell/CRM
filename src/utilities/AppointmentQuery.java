@@ -7,8 +7,21 @@ import model.Appointment;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/** This class contains database interface methods. This class manipulates data pertaining to Appointment objects.  */
 public abstract class AppointmentQuery {
 
+    /** This method inserts appointment data into a database.
+     * @param title Appointment title.
+     * @param description Appointment description.
+     * @param location Appointment location.
+     * @param type Appointment type.
+     * @param start Appointment start date and time.
+     * @param end Appointment end date and time.
+     * @param customerID Customer's ID.
+     * @param userID User's ID.
+     * @param contactID Contact's ID.
+     * @return rowsAffected The number of rows affected by the INSERT statement.
+     * */
     public static int insert(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerID, int userID, int contactID) {
         String sql = "INSERT INTO APPOINTMENTS (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int rowsAffected = 0;
@@ -30,6 +43,19 @@ public abstract class AppointmentQuery {
         return rowsAffected;
     }
 
+    /** This method updates appointment data in the database for a specific appointment ID.
+     * @param appointmentID The ID of the appointment being updated.
+     * @param title Appointment title.
+     * @param description Appointment description.
+     * @param location Appointment location.
+     * @param type Appointment type.
+     * @param start Appointment start date and time.
+     * @param end Appointment end date and time.
+     * @param customerID Customer's ID.
+     * @param userID User's ID.
+     * @param contactID Contact's ID.
+     * @return rowsAffected The number of rows affected by the UPDATE statement.
+     * */
     public static int update(int appointmentID, String title, String description, String location, String type, Timestamp start, Timestamp end, int customerID, int userID, int contactID) {
         String sql = "UPDATE APPOINTMENTS SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         int rowsAffected = 0;
@@ -52,6 +78,10 @@ public abstract class AppointmentQuery {
         return rowsAffected;
     }
 
+    /** This method deletes appointments of a specific appointment ID from the database.
+     * @param appointmentID The ID of the appointment being deleted.
+     * @return rowsAffected The number of rows affected by the DELETE statement.
+     * */
     public static int delete(int appointmentID) {
         String sql = "DELETE FROM APPOINTMENTS WHERE Appointment_ID = ?";
         int rowsAffected = 0;
@@ -65,6 +95,10 @@ public abstract class AppointmentQuery {
         return rowsAffected;
     }
 
+    /** This method deletes all appointments associated with a specific customer ID from the database.
+     * @param customerID The customer ID whose appointments will be deleted.
+     * @return rowsAffected The number of rows affected by the DELETE statement.
+     * */
     public static int deleteAssociated(int customerID) {
         String sql = "DELETE FROM APPOINTMENTS WHERE Customer_ID = ?";
         int rowsAffected = 0;
@@ -78,6 +112,9 @@ public abstract class AppointmentQuery {
         return rowsAffected;
     }
 
+    /** This method selects all appointments from a database into an Observable List.
+     * @return allAppointments The Observable List containing all appointments.
+     * */
     public static ObservableList<Appointment> select() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         String sql = "SELECT * FROM APPOINTMENTS";
@@ -104,6 +141,10 @@ public abstract class AppointmentQuery {
         return allAppointments;
     }
 
+    /** This method selects all appointments associated with a customer ID into an Observable List.
+     * @param selectedCustomerID The ID of the customer selected in the customer table.
+     * @return allAssociated The Observable List containing all associated appointments.
+     * */
     public static ObservableList<Appointment> selectAssociated(int selectedCustomerID) {
         ObservableList<Appointment> allAssociated = FXCollections.observableArrayList();
         String sql = "SELECT * FROM APPOINTMENTS WHERE Customer_ID = ?";
@@ -131,6 +172,11 @@ public abstract class AppointmentQuery {
         return allAssociated;
     }
 
+    /** This method returns the total number of appointments of a given month and year This method is used in the bar-chart.
+     * @param month The specified month to be selected from.
+     * @param year The specified year to be selected from.
+     * @return total The total number of appointments.
+     * */
     public static int monthlyTotal(int month, int year) {
         String sql = "SELECT COUNT(*) AS total FROM APPOINTMENTS WHERE MONTH(Start) = ? AND YEAR(Start) = ?";
         int total = 0;
@@ -148,6 +194,10 @@ public abstract class AppointmentQuery {
         return total;
     }
 
+    /** This method returns an Observable List of appointments associated with a specific contact ID This method is used in the Schedule report..
+     * @param contactID Contact's ID.
+     * @return allAssociated The Observable List containing all associated appointments.
+     * */
     public static ObservableList<Appointment> report(int contactID) {
         ObservableList<Appointment> allAssociated = FXCollections.observableArrayList();
         String sql = "SELECT * FROM APPOINTMENTS WHERE Contact_ID = ?";
@@ -174,6 +224,9 @@ public abstract class AppointmentQuery {
         return allAssociated;
     }
 
+    /** This method returns an Observable List of all appointment types from the database. This method is used in the Month/Type report's combo-box.
+     * @return allTypes An Observable List of all appointment types.
+     * */
     public static ObservableList<Appointment> type() {
         ObservableList allTypes = FXCollections.observableArrayList();
         String sql = "SELECT * FROM APPOINTMENTS";
@@ -190,6 +243,11 @@ public abstract class AppointmentQuery {
         return allTypes;
     }
 
+    /** This method returns the total number of appointments of a given type and month. This method is used in the Month/Type report.
+     * @param type Appointment type.
+     * @param month The month to be selected from.
+     * @return total The total number of appointments.
+     * */
     public static int total(String type, int month) {
         String sql = "SELECT COUNT(*) AS total FROM APPOINTMENTS WHERE Type = ? AND MONTH(Start) = ? ";
         int total = 0;

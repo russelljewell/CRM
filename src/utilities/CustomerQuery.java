@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** This class contains database interface methods. This class queries data pertaining to Customer objects.  */
 public abstract class CustomerQuery {
 
     public static int insert(String customerName, String address, String postalCode, String phoneNumber, int divisionID) {

@@ -27,71 +27,34 @@ public class Customer {
         return customerID;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
-    }
-
     public String getCustomerName() {
         return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getPostalCode() {
         return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public int getDivisionID() {
         return divisionID;
-    }
-
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
     }
 
     public int getCountryID() {
         return countryID;
     }
 
-    public void setCountryID(int countryID) {
-        this.countryID = countryID;
-    }
-
-    public String getDivisionName() {
-        return divisionName;
-    }
-
-    public void setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
-    }
+    public String getDivisionName() { return divisionName; }
 
     public String getCountryName() {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
 }

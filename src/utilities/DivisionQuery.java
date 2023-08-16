@@ -8,8 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** This class contains database interface methods. This class queries data pertaining to First Level Division objects.  */
 public class DivisionQuery {
 
+    /** This method returns an Observable List of all first-level divisions of a given country ID from the database.
+     * @return allDivisions The Observable List of all divisions.
+     * */
     public static ObservableList<Division> divisions(int countryID) {
         ObservableList<Division> allDivisions = FXCollections.observableArrayList();
         String sql = "SELECT * FROM FIRST_LEVEL_DIVISIONS WHERE Country_ID = ?";
@@ -27,14 +31,5 @@ public class DivisionQuery {
             throwables.printStackTrace();
         }
         return allDivisions;
-    }
-
-    public static int associatedCountry(int divisionID) throws SQLException {
-            String sql = "SELECT Country_ID FROM FIRST_LEVEL_DIVISIONS WHERE Division_ID = ?";
-            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            ps.setInt(1, divisionID);
-            int countryID = rs.getInt("Country_ID");
-            return countryID;
     }
 }

@@ -8,7 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** This class contains database interface methods. This class queries data pertaining to Contact objects.  */
 public class ContactQuery {
+
+    /** This method returns an Observable List of all contacts from the database.
+     * @return allContacts The Observable List of all contacts.
+     * */
     public static ObservableList<Contact> contacts() {
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CONTACTS";

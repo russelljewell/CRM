@@ -13,18 +13,6 @@ public class Contact {
         return contactID;
     }
 
-    public void setContactID(int contactID) {
-        this.contactID = contactID;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
     @Override
     public String toString() {
         return contactName;

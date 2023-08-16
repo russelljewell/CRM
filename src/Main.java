@@ -6,12 +6,13 @@ import javafx.stage.Stage;
 import utilities.JDBC;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
+/** This class creates a customer relationship management application. */
 public class Main extends Application {
 
+    /** This method displays the dashboard.
+     * @param primaryStage The primary stage.
+     * */
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
@@ -22,6 +23,7 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
     }
 
+    /**This is the Main method. This is the first method called which launches the program and establishes a connection to a MySQL database.*/
     public static void main(String[] args) {
         //Locale.setDefault(new Locale("fr"));
         JDBC.openConnection();

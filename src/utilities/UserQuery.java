@@ -8,8 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** This class contains database interface methods. This class queries data pertaining to User objects.  */
 public class UserQuery {
 
+    /** This method returns an Observable List of all users from the database This method is used to validate login credentials.
+     * @return allUsers The Observable List of all users.
+     * */
     public static ObservableList<User> users() {
         ObservableList<User> allUsers = FXCollections.observableArrayList();
         String sql = "SELECT * FROM USERS";

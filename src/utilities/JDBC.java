@@ -3,6 +3,7 @@ package utilities;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/** This class establishes a connection to the MySQL database. */
 public class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
@@ -14,6 +15,7 @@ public class JDBC {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /** This method opens the database connection. This method is run when the application is run. */
     public static void openConnection()
     {
         try {
@@ -27,6 +29,7 @@ public class JDBC {
         }
     }
 
+    /** This method opens the database connection. This method is run when the application is closed. */
     public static void closeConnection() {
         try {
             connection.close();

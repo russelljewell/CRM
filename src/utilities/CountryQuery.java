@@ -8,7 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** This class contains database interface methods. This class queries data pertaining to Country objects.  */
 public class CountryQuery {
+
+    /** This method returns an Observable List of all countries from the database.
+     * @return allCountries The Observable List of all countries.
+     * */
     public static ObservableList<Country> countries() {
         ObservableList<Country> allCountries = FXCollections.observableArrayList();
         String sql = "SELECT * FROM COUNTRIES";

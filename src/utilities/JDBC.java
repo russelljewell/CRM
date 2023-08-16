@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * JDBC Utility
+ * */
+
 package utilities;
 
 import java.sql.Connection;

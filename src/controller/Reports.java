@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Reports Controller
+ * */
+
 package controller;
 
 import javafx.collections.FXCollections;
@@ -62,7 +68,6 @@ public class Reports implements Initializable {
         if (yearTF.getText().isBlank()) {
             Alerts.invalid();
         } else {
-            /** Initialize bar char and populate x and y axes. */
             XYChart.Series data = new XYChart.Series();
             data.getData().add(new XYChart.Data("January", AppointmentQuery.monthlyTotal(1, Integer.parseInt(yearTF.getText()))));
             data.getData().add(new XYChart.Data("February", AppointmentQuery.monthlyTotal(2, Integer.parseInt(yearTF.getText()))));
@@ -122,7 +127,6 @@ public class Reports implements Initializable {
         contactsComboBox.setItems(ContactQuery.contacts());
         typeComboBox.setItems(AppointmentQuery.type());
 
-        /** Initialize schedule table columns. */
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentID"));
         customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerID"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));

@@ -1,7 +1,14 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Appointment Model
+ * */
+
 package model;
 
 import java.time.LocalDateTime;
 
+/** This class creates an appointment object. */
 public class Appointment {
     private int appointmentID;
     private String title;
@@ -14,6 +21,18 @@ public class Appointment {
     private int userID;
     private int contactID;
 
+    /** Appointment constructor.
+     * @param appointmentID The appointment ID.
+     * @param title The appointment title.
+     * @param description The appointment description.
+     * @param location The appointment location.
+     * @param type The appointment type.
+     * @param start The appointment start date and time.
+     * @param end The appointment end date and time.
+     * @param customerID The appointment customer ID.
+     * @param userID The appointment user ID.
+     * @param contactID The appointment contactID.
+     * */
     public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID) {
         this.appointmentID = appointmentID;
         this.title = title;

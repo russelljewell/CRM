@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * First-Level Division DAO
+ * */
+
 package utilities;
 
 import javafx.collections.FXCollections;
@@ -12,6 +18,7 @@ import java.sql.SQLException;
 public class DivisionQuery {
 
     /** This method returns an Observable List of all first-level divisions of a given country ID from the database.
+     * @param countryID The ID of the selected country.
      * @return allDivisions The Observable List of all divisions.
      * */
     public static ObservableList<Division> divisions(int countryID) {

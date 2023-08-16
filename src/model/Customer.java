@@ -1,5 +1,12 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Customer Model
+ * */
+
 package model;
 
+/** This class creates a Customer object. */
 public class Customer {
     private int customerID;
     private String customerName;
@@ -11,6 +18,17 @@ public class Customer {
     private String divisionName;
     private String countryName;
 
+    /** Customer constructor.
+     * @param customerID The customer ID.
+     * @param customerName The customer name.
+     * @param address The customer address.
+     * @param postalCode The customer postal code.
+     * @param phoneNumber The customer phone number.
+     * @param divisionID The customer division ID.
+     * @param countryID The customer country ID.
+     * @param divisionName The customer division name.
+     * @param countryName The customer country name.
+     * */
     public Customer(int customerID, String customerName, String address, String postalCode, String phoneNumber, int divisionID, int countryID, String divisionName, String countryName) {
         this.customerID = customerID;
         this.customerName = customerName;

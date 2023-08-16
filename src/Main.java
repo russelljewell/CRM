@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Main
+ * */
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +22,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
         primaryStage.setTitle("Customer Relationship Manager");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -25,7 +30,6 @@ public class Main extends Application {
 
     /**This is the Main method. This is the first method called which launches the program and establishes a connection to a MySQL database.*/
     public static void main(String[] args) {
-        //Locale.setDefault(new Locale("fr"));
         JDBC.openConnection();
         launch(args);
     }

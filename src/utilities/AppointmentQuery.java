@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Appointment DAO
+ * */
+
 package utilities;
 
 import javafx.collections.FXCollections;

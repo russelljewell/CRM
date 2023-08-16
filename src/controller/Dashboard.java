@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Dashboard Controller
+ * */
+
 package controller;
 
 import javafx.collections.FXCollections;
@@ -358,7 +364,7 @@ public class Dashboard implements Initializable {
     }
 
     /** This method displays the reports screen.
-     * @Param The generate reports button is pressed.
+     * @param actionEvent The generate reports button is pressed.
      * */
     public void onActionGenerateReport(ActionEvent actionEvent) {
         try {
@@ -464,7 +470,6 @@ public class Dashboard implements Initializable {
             }
         });
 
-        /** Initialize customer table columns. */
         customerTable.setItems(CustomerQuery.select());
         idCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerID"));
         nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));

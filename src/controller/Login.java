@@ -1,3 +1,9 @@
+/**
+ * @author Russell Jewell
+ * Customer Relationshop Manager
+ * Login Controller
+ * */
+
 package controller;
 
 import javafx.event.ActionEvent;
